@@ -1,0 +1,241 @@
+import React, { useState, useEffect, useRef } from 'react';
+import Lenis from 'lenis';
+import { motion, AnimatePresence } from 'framer-motion';
+import HomePage from './components/HomePage';
+import AboutPage from './components/AboutPage';
+import SplashScreen from './components/SplashScreen';
+import MuteButton from './components/MuteButton';
+
+// Module-level singletons to persist across React StrictMode dev mounts and page transitions
+let introAudioInstance = null;
+let introAudioHasStarted = false;
+let globalIntroHasPlayed = false;
+
+function playIntroAudio(isMuted = false) {
+  if (introAudioHasStarted) return;
+  if (!introAudioInstance) {
+    introAudioInstance = new Audio(encodeURI('/audio/SFX Norque.mp3'));
+    introAudioInstance.loop = false;
+    introAudioInstance.volume = 0.25; // Subtle and atmospheric, but clearly listenable
+  }
+  introAudioInstance.muted = isMuted;
+  if (introAudioInstance.paused && !introAudioHasStarted) {
+    introAudioInstance.play().then(() => {
+      introAudioHasStarted = true;
+    }).catch(() => {});
+  }
+}
+
+export default function App() {
+  const [currentPage, setCurrentPage] = useState('home');
+  const [pendingSection, setPendingSection] = useState(null);
+  const [hasIntroPlayed, setHasIntroPlayed] = useState(globalIntroHasPlayed);
+  const [isMuted, setIsMuted] = useState(false);
+  const isMutedRef = useRef(false);
+  const lenisRef = useRef(null);
+
+  const handleIntroComplete = () => {
+    globalIntroHasPlayed = true;
+    setHasIntroPlayed(true);
+  };
+
+  const toggleMute = () => {
+    setIsMuted((prev) => {
+      const next = !prev;
+      isMutedRef.current = next;
+      if (introAudioInstance) {
+        introAudioInstance.muted = next;
+      }
+      return next;
+    });
+  };
+
+  const handleNavigate = (targetPage, sectionId = null) => {
+    if (targetPage === currentPage) {
+      if (sectionId) {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(el, { duration: 1.2 });
+          } else {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      } else {
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(0, { duration: 1 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+      return;
+    }
+
+    // When switching pages, immediately reset scroll to top
+    window.scrollTo(0, 0);
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+
+    setPendingSection(sectionId);
+    setCurrentPage(targetPage);
+  };
+
+  useEffect(() => {
+    // Disable automatic browser scroll restoration on refresh/mount
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    // Initialize Lenis Smooth Scroll
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+    });
+    lenis.scrollTo(0, { immediate: true });
+    lenisRef.current = lenis;
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+      lenisRef.current = null;
+    };
+  }, []);
+
+  // Handle pending scroll target after page transition completes
+  useEffect(() => {
+    if (currentPage === 'home' && pendingSection) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(pendingSection);
+        if (el) {
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(el, { duration: 1.2 });
+          } else {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+        setPendingSection(null);
+      }, 550);
+      return () => clearTimeout(timer);
+    }
+  }, [currentPage, pendingSection]);
+
+  // 1) Play "SFX Norque.mp3" when opening/refreshing the website (starts with splash, continues playing)
+  useEffect(() => {
+    playIntroAudio(isMutedRef.current);
+
+    const handleInitialUnlock = (e) => {
+      if (introAudioHasStarted) return;
+      const target = e.target;
+      if (!target || !(target instanceof Element)) return;
+
+      const isButtonOrLink = Boolean(
+        target.closest('button, a, [role="button"], input[type="button"], input[type="submit"], .cursor-pointer, [class*="cursor-pointer"]') ||
+        window.getComputedStyle(target).cursor === 'pointer'
+      );
+
+      // Only trigger intro audio if clicking non-button areas
+      if (!isButtonOrLink && introAudioInstance && introAudioInstance.paused && !introAudioHasStarted) {
+        introAudioInstance.muted = isMutedRef.current;
+        introAudioInstance.play().then(() => {
+          introAudioHasStarted = true;
+          window.removeEventListener('pointerdown', handleInitialUnlock);
+        }).catch(() => {});
+      }
+    };
+
+    window.addEventListener('pointerdown', handleInitialUnlock, { passive: true });
+    return () => {
+      window.removeEventListener('pointerdown', handleInitialUnlock);
+    };
+  }, []);
+
+  // 2) Play "SFX Norque_2.mp3" ONLY when clicking a button or clickable element (once, not looped)
+  useEffect(() => {
+    const clickAudio = new Audio(encodeURI('/audio/SFX Norque_2.mp3'));
+    clickAudio.loop = false;
+
+    const handleClick = (e) => {
+      const target = e.target;
+      if (!target || !(target instanceof Element)) return;
+
+      const isInteractive = Boolean(
+        target.closest('button, a, [role="button"], input[type="button"], input[type="submit"], .cursor-pointer, [class*="cursor-pointer"]') ||
+        window.getComputedStyle(target).cursor === 'pointer'
+      );
+
+      if (isInteractive) {
+        const sound = clickAudio.cloneNode();
+        sound.loop = false;
+        sound.play().catch(() => {});
+      }
+    };
+
+    window.addEventListener('click', handleClick, { capture: true });
+    return () => {
+      window.removeEventListener('click', handleClick, { capture: true });
+    };
+  }, []);
+
+  return (
+    <div className="relative min-h-screen bg-black text-white font-beausite selection:bg-white selection:text-black overflow-x-clip">
+      {/* Initial splash screen on page load */}
+      <SplashScreen />
+
+      {/* Cinematic 1-second Page Transition: Zoom-out & Fade to Black -> Swap -> Fade in & Zoom-in */}
+      <AnimatePresence 
+        mode="wait"
+        onExitComplete={() => {
+          window.scrollTo(0, 0);
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(0, { immediate: true });
+          }
+        }}
+      >
+        <motion.div
+          key={currentPage}
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ 
+            opacity: 1, 
+            scale: 1,
+            transition: {
+              duration: 0.5,
+              ease: [0.16, 1, 0.3, 1] // Smooth cinematic deceleration zoom-in
+            }
+          }}
+          exit={{ 
+            opacity: 0, 
+            scale: 0.94,
+            transition: {
+              duration: 0.45,
+              ease: [0.4, 0, 0.2, 1] // Smooth acceleration zoom-out to black
+            }
+          }}
+          className="w-full origin-center"
+        >
+          {currentPage === 'home' ? (
+            <HomePage 
+              onNavigate={handleNavigate} 
+              hasIntroPlayed={hasIntroPlayed}
+              onIntroComplete={handleIntroComplete}
+            />
+          ) : (
+            <AboutPage onNavigate={handleNavigate} />
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Floating persistent Mute Button with Liquid Glass optical behavior */}
+      <MuteButton isMuted={isMuted} onToggle={toggleMute} />
+    </div>
+  );
+}

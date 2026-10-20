@@ -1,0 +1,82 @@
+import React from 'react';
+import projectAxis from '../assets/project-axis.png';
+import projectFusionForm from '../assets/project-fusion-form.png';
+import projectStudioJuzenas from '../assets/project-studio-juzenas.png';
+import projectMms from '../assets/project-mms.png';
+
+const projects = [
+  {
+    id: 'axis',
+    title: 'AXIS® - Real Estate Consultancy',
+    location: 'Egypt',
+    category: 'Brand Development',
+    image: projectAxis,
+  },
+  {
+    id: 'fusion-form',
+    title: 'Fusion Form® - Architecture Development',
+    location: 'Egypt',
+    category: 'UI/UX Design & Web Development',
+    image: projectFusionForm,
+  },
+  {
+    id: 'studio-juzenas',
+    title: 'STUDIO JUZėNAS® - Architecture Studio',
+    location: 'Lithuania',
+    category: 'Brand Development | UI/UX Design & Web Development',
+    image: projectStudioJuzenas,
+  },
+  {
+    id: 'mms-architects',
+    title: 'MMS ARCHITECTS™',
+    location: 'Egypt',
+    category: 'Brand Development',
+    image: projectMms,
+  },
+];
+
+export default function SelectedWorks() {
+  return (
+    <section id="works" className="w-full bg-black py-[2.7778vw]">
+      {/* Universal margin: 24px (1.6667vw) */}
+      <div className="w-full px-[1.6667vw]">
+        {/* Section Header */}
+        <h2 className="text-[3.1944vw] font-medium tracking-[-0.03em] leading-none text-white mb-[1.6667vw]">
+          SELECTED WORKS (04)
+        </h2>
+
+        {/* 2-Column Project Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[0.8333vw] gap-y-[2.5vw]">
+          {projects.map((project) => (
+            <article key={project.id} className="group cursor-pointer">
+              {/* Image Frame */}
+              <div className="w-full overflow-hidden rounded-[0.1389vw] bg-[#121212]">
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="w-full aspect-[702/434] object-cover rounded-[0.1389vw] transition-transform duration-500 ease-out group-hover:scale-[1.015]"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* Metadata */}
+              <div className="pt-[0.6944vw]">
+                <div className="flex justify-between items-baseline">
+                  <h3 className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-white">
+                    {project.title}
+                  </h3>
+                  <span className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-white">
+                    {project.location}
+                  </span>
+                </div>
+                <p className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-[#747474] pt-[0.2083vw]">
+                  {project.category}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
