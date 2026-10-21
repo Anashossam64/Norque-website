@@ -116,7 +116,7 @@ export default function Showcase() {
             </p>
             <p className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
               Feel free to explore our{" "}
-              <a href="#works" className="underline hover:opacity-70 transition-opacity">
+              <a href="#works" className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer">
                 Works
               </a>
               , check our{" "}
@@ -124,12 +124,12 @@ export default function Showcase() {
                 href="https://www.behance.net" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="underline hover:opacity-70 transition-opacity"
+                className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer"
               >
                 Behance
               </a>{" "}
               or read our{" "}
-              <a href="#philosophy" className="underline hover:opacity-70 transition-opacity">
+              <a href="#philosophy" className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer">
                 Philosophy
               </a>
               .
