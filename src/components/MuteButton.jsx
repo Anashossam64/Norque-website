@@ -1,12 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
 
+/* ========================================================================= */
+/* MUTE BUTTON COMPONENT                                                     */
+/* Liquid Glass optical refraction shader + global audio mute toggle         */
+/* ========================================================================= */
 export default function MuteButton({ isMuted, onToggle }) {
   const [lensDataUrl, setLensDataUrl] = useState('');
   const feImageRef = useRef(null);
 
+  /* ─── 1. Generate Optical Spherical Normal Map ─── */
   useEffect(() => {
-    // Generate optical spherical barrel lens normal map for real-time circular glass refraction
     const size = 128;
     const canvas = document.createElement('canvas');
     canvas.width = size;
@@ -25,21 +29,17 @@ export default function MuteButton({ isMuted, onToggle }) {
         let dy = 0;
 
         if (r <= 1.0) {
-          // Optical dome lens refraction force (barrel magnification with curved rim distortion)
+          // Optical dome lens refraction force
           const force = Math.sin(r * Math.PI) * (1.0 - r * 0.2);
           dx = - (r > 0 ? (nx / r) : 0) * force;
           dy = - (r > 0 ? (ny / r) : 0) * force;
         }
 
         const idx = (y * size + x) * 4;
-        // R channel: horizontal refraction (-1..1 -> 0..255)
-        imgData.data[idx] = Math.round((dx * 0.5 + 0.5) * 255);
-        // G channel: vertical refraction (-1..1 -> 0..255)
-        imgData.data[idx + 1] = Math.round((dy * 0.5 + 0.5) * 255);
-        // B channel: neutral 255
-        imgData.data[idx + 2] = 255;
-        // Alpha: 255
-        imgData.data[idx + 3] = 255;
+        imgData.data[idx] = Math.round((dx * 0.5 + 0.5) * 255);     // R: horizontal refraction
+        imgData.data[idx + 1] = Math.round((dy * 0.5 + 0.5) * 255); // G: vertical refraction
+        imgData.data[idx + 2] = 255;                                 // B: neutral
+        imgData.data[idx + 3] = 255;                                 // Alpha
       }
     }
 
@@ -53,58 +53,68 @@ export default function MuteButton({ isMuted, onToggle }) {
     }
   }, []);
 
+  /* ─── Render ─── */
   return (
     <>
-      {/* Invisible SVG filter providing optical Liquid Glass refraction displacement */}
+      {/* ─── Optical SVG Filter Definition ─── */}
       <svg
         className="fixed pointer-events-none -z-50 w-0 h-0 overflow-hidden"
         aria-hidden="true"
       >
         <defs>
-          <filter id="norque-liquid-lens-circle" x="-20%" y="-20%" width="140%" height="140%">
+          <filter
+            id="norque-liquid-lens-circle"
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+            colorInterpolationFilters="sRGB"
+          >
             <feImage
               ref={feImageRef}
-              id="norque-lens-map"
               href={lensDataUrl || undefined}
-              xlinkHref={lensDataUrl || undefined}
-              result="normalMap"
+              result="lensMap"
+              preserveAspectRatio="xMidYMid slice"
             />
             <feDisplacementMap
               in="SourceGraphic"
-              in2="normalMap"
+              in2="lensMap"
               scale="26"
               xChannelSelector="R"
               yChannelSelector="G"
+              result="refracted"
             />
+            <feComposite in="refracted" in2="SourceGraphic" operator="over" />
           </filter>
         </defs>
       </svg>
 
-      {/* Circular Dark Satin Liquid Glass Mute Button */}
-      <button
-        onClick={onToggle}
-        type="button"
-        aria-label={isMuted ? "Unmute background audio" : "Mute background audio"}
-        className="fixed bottom-6 right-6 sm:bottom-[1.6667vw] sm:right-[1.6667vw] z-50 group w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center cursor-pointer select-none border border-white/15 hover:border-white/30 text-white active:scale-[0.92] transition-transform duration-200"
-        style={{
-          boxShadow: 'none',
-          background: 'linear-gradient(135deg, rgba(32, 32, 38, 0.65) 0%, rgba(14, 14, 18, 0.75) 100%)',
-          backdropFilter: lensDataUrl
-            ? 'url(#norque-liquid-lens-circle) blur(4px) brightness(1.06)'
-            : 'blur(12px) brightness(1.06)',
-          WebkitBackdropFilter: lensDataUrl
-            ? 'url(#norque-liquid-lens-circle) blur(4px) brightness(1.06)'
-            : 'blur(12px) brightness(1.06)',
-        }}
+      {/* ─── Floating Interactive Button ─── */}
+      <aside 
+        aria-label="Audio controls" 
+        className="fixed bottom-[1.6667vw] right-[1.6667vw] z-50 pointer-events-auto"
       >
-        <span className="flex items-center justify-center text-white/90 group-hover:text-white transition-colors pointer-events-none">
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
+          style={{
+            backdropFilter: lensDataUrl 
+              ? 'url(#norque-liquid-lens-circle) blur(4px) brightness(1.06)' 
+              : 'blur(20px) brightness(1.08)',
+            WebkitBackdropFilter: lensDataUrl 
+              ? 'url(#norque-liquid-lens-circle) blur(4px) brightness(1.06)' 
+              : 'blur(20px) brightness(1.08)',
+          }}
+          className="relative group w-[3.3333vw] h-[3.3333vw] min-w-[48px] min-h-[48px] rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 ease-out border border-white/25 hover:border-white/50 bg-white/[0.04] hover:bg-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.4),inset_0_-1px_2px_rgba(0,0,0,0.4)] active:scale-95"
+        >
           {isMuted ? (
-            <VolumeX className="w-[18px] h-[18px] text-white/60 group-hover:text-white transition-colors" strokeWidth={2} />
+            <VolumeX className="w-[1.25vw] h-[1.25vw] min-w-[18px] min-h-[18px] text-white/70 group-hover:text-white transition-colors" />
           ) : (
-            <Volume2 className="w-[18px] h-[18px] text-white" strokeWidth={2} />
+            <Volume2 className="w-[1.25vw] h-[1.25vw] min-w-[18px] min-h-[18px] text-white/90 group-hover:text-white transition-colors" />
           )}
-        </span>
-      </button>
+        </button>
+      </aside>
     </>
   );
 }

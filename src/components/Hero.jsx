@@ -4,7 +4,12 @@ import Navbar from './Navbar';
 import { logoPaths } from './logoPaths';
 import heroBackgroundVideo from '../assets/hero-background.mp4';
 
+/* ========================================================================= */
+/* HERO SECTION COMPONENT                                                    */
+/* Full-screen video hero with sequential typographic rise & brand vectors   */
+/* ========================================================================= */
 export default function Hero({ onNavigate, hasIntroPlayed = false, onIntroComplete }) {
+  /* ─── State & Sequence Timers ─── */
   const [isIntroStarted, setIsIntroStarted] = useState(hasIntroPlayed);
   const [isVideoVisible, setIsVideoVisible] = useState(hasIntroPlayed);
   const videoRef = useRef(null);
@@ -43,9 +48,10 @@ export default function Hero({ onNavigate, hasIntroPlayed = false, onIntroComple
     };
   }, [hasIntroPlayed, onIntroComplete]);
 
+  /* ─── Render ─── */
   return (
     <section className="relative w-full h-screen min-h-screen flex flex-col justify-between overflow-hidden bg-black select-none">
-      {/* 100vh Background Video that fades in after 2.5s intro animation */}
+      {/* ─── 1. Background Video Layer ─── */}
       <div 
         className={`absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-[1200ms] z-0 ${
           isVideoVisible ? 'opacity-100' : 'opacity-0'
@@ -62,17 +68,17 @@ export default function Hero({ onNavigate, hasIntroPlayed = false, onIntroComple
         />
       </div>
 
-      {/* Top Navbar with slide down animation synchronized with intro */}
+      {/* ─── 2. Top Header Navigation ─── */}
       <Navbar isIntroStarted={isIntroStarted} activePage="home" onNavigate={onNavigate} />
 
-      {/* Spacer */}
+      {/* ─── 3. Flexible Center Spacer ─── */}
       <div className="flex-1"></div>
 
-      {/* Bottom Main Logo Container with 24px (1.6667vw) Margin on Left, Right, and Bottom */}
+      {/* ─── 4. Bottom Main Logo & Brand Statement ─── */}
       <div className="relative z-10 w-full px-[1.6667vw] pb-[1.6667vw]">
-        {/* Top text above logo */}
+        {/* Top Text Row Above Giant Logo */}
         <div className="flex justify-between items-end mb-[2.0833vw] overflow-hidden">
-          {/* Left Text */}
+          {/* Left Text: "BUILT FOR BRANDS THAT WANT / SOMETHING REAL" */}
           <motion.div
             className="space-y-[0.15vw]"
             initial={hasIntroPlayed ? "visible" : "hidden"}
@@ -106,8 +112,9 @@ export default function Hero({ onNavigate, hasIntroPlayed = false, onIntroComple
             </div>
           </motion.div>
 
-          {/* Right Text */}
+          {/* Right Text: "CREATING WORLDWIDE ©" */}
           <motion.div
+            className="overflow-hidden"
             initial={hasIntroPlayed ? "visible" : "hidden"}
             animate={isIntroStarted ? "visible" : "hidden"}
             variants={{
@@ -121,7 +128,7 @@ export default function Hero({ onNavigate, hasIntroPlayed = false, onIntroComple
           </motion.div>
         </div>
 
-        {/* 1:1 Staggered Vector Letters Intro Logo */}
+        {/* ─── 5. Full-Width Animated Vector Brand Logo ─── */}
         <div className="w-full overflow-hidden">
           <motion.svg
             width="100%"

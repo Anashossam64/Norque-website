@@ -1,13 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-/**
- * InteractiveInfiniteCarousel:
- * - Autoplays infinitely in a seamless bidirectional loop
- * - Fully interactive with Click & Drag (mouse & touch) and trackpad horizontal gestures
- * - Buffer tracks on BOTH left and right eliminate all snapping/jumping artifacts
- * - Smooth physics inertia glide when released
- * - Pauses on hover; cleanly preserves card clicks when not dragging
- */
+/* ========================================================================= */
+/* INTERACTIVE INFINITE CAROUSEL                                             */
+/* - Continuous bidirectional infinite autoplay                              */
+/* - Physics-based pointer drag (mouse & touch) + inertia glide              */
+/* - Horizontal trackpad swipe support                                       */
+/* - Multi-track buffer geometry prevents snapping / seams                   */
+/* - Safe drag-vs-click discriminator with microsecond SFX suppression      */
+/* ========================================================================= */
 export default function InteractiveInfiniteCarousel({
   items,
   renderItem,
@@ -16,6 +16,7 @@ export default function InteractiveInfiniteCarousel({
   className = "",
   speed = -0.75, // pixels per frame at 60fps
 }) {
+  /* ─── DOM & Animation Refs ─── */
   const outerRef = useRef(null);
   const trackContainerRef = useRef(null);
   const track1Ref = useRef(null);
@@ -35,7 +36,9 @@ export default function InteractiveInfiniteCarousel({
 
   const [isCursorGrabbing, setIsCursorGrabbing] = useState(false);
 
-  // Measure single track width dynamically via ResizeObserver
+  /* ======================================================================= */
+  /* 1. DYNAMIC WIDTH CALCULATION (RESIZE OBSERVER)                          */
+  /* ======================================================================= */
   useEffect(() => {
     const track = track1Ref.current;
     if (!track) return;
@@ -71,7 +74,9 @@ export default function InteractiveInfiniteCarousel({
     };
   }, []);
 
-  // Main animation loop
+  /* ======================================================================= */
+  /* 2. RAF PHYSICS ANIMATION LOOP                                           */
+  /* ======================================================================= */
   useEffect(() => {
     let lastTime = performance.now();
 
@@ -83,7 +88,7 @@ export default function InteractiveInfiniteCarousel({
         // Inertia decay if velocity exists from drag release
         if (Math.abs(velocityRef.current) > 0.05) {
           offsetRef.current += velocityRef.current * dt;
-          velocityRef.current *= Math.pow(0.95, dt); // Silky friction glide
+          velocityRef.current *= Math.pow(0.95, dt); // Friction decay
         } else if (!isHoveredRef.current) {
           // Normal continuous auto-scroll speed
           offsetRef.current += speed * dt;
@@ -114,12 +119,15 @@ export default function InteractiveInfiniteCarousel({
     };
   }, [speed]);
 
-  // Pointer drag handlers (attached to window on pointerdown for uninterrupted dragging)
+  /* ======================================================================= */
+  /* 3. POINTER DRAG & INERTIA FLING HANDLERS                                */
+  /* ======================================================================= */
   const handlePointerDown = (e) => {
     if (e.button !== undefined && e.button !== 0) return;
 
     isDraggingRef.current = true;
     hasDraggedRef.current = false;
+    window.__norqueCarouselDragged = false;
     dragStartXRef.current = e.clientX;
     dragStartOffsetRef.current = offsetRef.current;
     lastXRef.current = e.clientX;
@@ -133,12 +141,12 @@ export default function InteractiveInfiniteCarousel({
       const deltaX = moveEvent.clientX - dragStartXRef.current;
       if (Math.abs(deltaX) > 4) {
         hasDraggedRef.current = true;
+        window.__norqueCarouselDragged = true;
       }
 
       const now = performance.now();
       const dt = Math.max(1, now - lastMoveTimeRef.current);
       const instantVelocity = ((moveEvent.clientX - lastXRef.current) / dt) * 16.667;
-      // Smooth rolling velocity
       velocityRef.current = velocityRef.current * 0.35 + instantVelocity * 0.65;
       lastXRef.current = moveEvent.clientX;
       lastMoveTimeRef.current = now;
@@ -167,7 +175,28 @@ export default function InteractiveInfiniteCarousel({
       isDraggingRef.current = false;
       setIsCursorGrabbing(false);
 
-      // If user held pointer stationary before releasing (>60ms), cancel fling velocity
+      if (hasDraggedRef.current) {
+        window.__norqueCarouselDragged = true;
+
+        // Intercept and swallow the trailing click event
+        const preventClick = (clickEvent) => {
+          clickEvent.preventDefault();
+          clickEvent.stopPropagation();
+          clickEvent.stopImmediatePropagation?.();
+          window.removeEventListener('click', preventClick, true);
+        };
+        window.addEventListener('click', preventClick, true);
+
+        setTimeout(() => {
+          window.removeEventListener('click', preventClick, true);
+          hasDraggedRef.current = false;
+          window.__norqueCarouselDragged = false;
+        }, 80);
+      } else {
+        window.__norqueCarouselDragged = false;
+      }
+
+      // If user paused before release (>60ms), cancel fling velocity
       if (performance.now() - lastMoveTimeRef.current > 60) {
         velocityRef.current = 0;
       }
@@ -182,7 +211,9 @@ export default function InteractiveInfiniteCarousel({
     window.addEventListener('pointercancel', onPointerUp, { passive: true });
   };
 
-  // Support horizontal trackpad swipe / tilt wheel
+  /* ======================================================================= */
+  /* 4. TRACKPAD SWIPE & WHEEL HANDLER                                       */
+  /* ======================================================================= */
   const handleWheel = (e) => {
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 2) {
       e.preventDefault();
@@ -200,22 +231,32 @@ export default function InteractiveInfiniteCarousel({
     }
   };
 
+  /* ======================================================================= */
+  /* 5. MULTI-BUFFER TRACK RENDER                                            */
+  /* ======================================================================= */
   return (
     <div
       ref={outerRef}
       onPointerDown={handlePointerDown}
+      onClickCapture={(e) => {
+        if (hasDraggedRef.current || window.__norqueCarouselDragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation?.();
+        }
+      }}
       onWheel={handleWheel}
       onMouseEnter={() => { isHoveredRef.current = true; }}
       onMouseLeave={() => { isHoveredRef.current = false; }}
       className={`w-full overflow-hidden select-none touch-pan-y ${
-        isCursorGrabbing ? 'cursor-grabbing' : 'cursor-grab'
+        isCursorGrabbing ? 'cursor-grabbing [&_*]:!cursor-grabbing' : 'cursor-grab'
       } ${className}`}
     >
       <div
         ref={trackContainerRef}
         className="flex flex-nowrap w-max will-change-transform"
       >
-        {/* Track 0: Buffer Left (Guarantees seamless cards when dragging right) */}
+        {/* Track 0: Left Buffer (Seamless cards when dragging right) */}
         <div
           className={`flex shrink-0 ${gapClass} ${paddingRightClass}`}
           aria-hidden="true"
@@ -227,7 +268,7 @@ export default function InteractiveInfiniteCarousel({
           ))}
         </div>
 
-        {/* Track 1: Primary Center Track (Measured for width) */}
+        {/* Track 1: Primary Center Track (Width measurement anchor) */}
         <div
           ref={track1Ref}
           className={`flex shrink-0 ${gapClass} ${paddingRightClass}`}
@@ -239,7 +280,7 @@ export default function InteractiveInfiniteCarousel({
           ))}
         </div>
 
-        {/* Track 2: Buffer Right 1 */}
+        {/* Track 2: Right Buffer 1 */}
         <div
           className={`flex shrink-0 ${gapClass} ${paddingRightClass}`}
           aria-hidden="true"
@@ -251,7 +292,7 @@ export default function InteractiveInfiniteCarousel({
           ))}
         </div>
 
-        {/* Track 3: Buffer Right 2 (Wide screen buffer) */}
+        {/* Track 3: Right Buffer 2 (Wide screen buffer) */}
         <div
           className={`flex shrink-0 ${gapClass} ${paddingRightClass}`}
           aria-hidden="true"
@@ -263,7 +304,7 @@ export default function InteractiveInfiniteCarousel({
           ))}
         </div>
 
-        {/* Track 4: Buffer Right 3 (Ultra-wide / rapid drag buffer) */}
+        {/* Track 4: Right Buffer 3 (Ultra-wide / rapid flick buffer) */}
         <div
           className={`flex shrink-0 ${gapClass} ${paddingRightClass}`}
           aria-hidden="true"

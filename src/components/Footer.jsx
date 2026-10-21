@@ -1,14 +1,17 @@
 import React from 'react';
 import MainLogo from './MainLogo';
 
+/* ========================================================================= */
+/* UNIVERSAL FOOTER COMPONENT                                                */
+/* Project inquiry callout, giant vector brand mark, and studio links        */
+/* ========================================================================= */
 export default function Footer() {
   return (
     <footer id="contact" className="w-full bg-black">
-      {/* Universal margin: 24px (1.6667vw) */}
+      {/* Universal Container Margin: 24px (1.6667vw) */}
       <div className="w-full px-[1.6667vw]">
-        {/* Top border line */}
+        {/* ─── 1. Top Callout Section ─── */}
         <div className="border-t border-[#363636] pt-[1.6667vw]">
-          {/* Callout */}
           <div className="max-w-[23.9583vw]">
             <p className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
               Got a project on mind?<br />
@@ -23,16 +26,16 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Generous spacing to bottom logo */}
+        {/* ─── 2. Bottom Giant Brand Mark & Legal Directory ─── */}
         <div className="pt-[31.9444vw]">
-          {/* Giant Logo */}
+          {/* Full-Width Brand Vector */}
           <div className="w-full mb-[0.6944vw]">
             <MainLogo className="w-full h-auto text-white" />
           </div>
 
-          {/* Bottom Nav bar and Copyright */}
+          {/* Directory Bar & Copyright Notice */}
           <div className="pt-[0.6944vw] pb-[1.6667vw] flex flex-col md:flex-row justify-between items-start md:items-center gap-y-4">
-            {/* Nav links */}
+            {/* Primary Navigation & Social Directory */}
             <div className="flex flex-wrap items-center gap-x-[0.9722vw] text-[0.6944vw] font-semibold tracking-normal text-white">
               <a href="#about" className="hover:opacity-60 transition-opacity">About</a>
               <a href="#works" className="hover:opacity-60 transition-opacity">Works</a>

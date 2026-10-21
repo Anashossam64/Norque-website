@@ -1,6 +1,10 @@
 import React from 'react';
 import InteractiveInfiniteCarousel from '../InteractiveInfiniteCarousel';
 
+/* ========================================================================= */
+/* ABOUT NEWS SECTION                                                        */
+/* "What happened lately" interactive infinite news carousel                 */
+/* ========================================================================= */
 const NEWS_ITEMS = [
   {
     image: '/images/about/news-lithuania-chapter-1.png',
@@ -32,7 +36,7 @@ export default function AboutNews() {
   return (
     <section className="w-full pt-[4.1667vw] pb-[6.9444vw] px-[0.8333vw] sm:px-[0.8333vw]">
       <div className="w-full max-w-[1416px] mx-auto">
-        {/* Header with Title and Subtitle */}
+        {/* ─── 1. Header with Title & Subtitle ─── */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-[3.4722vw] gap-4">
           <h2 className="text-[32px] sm:text-[3.1944vw] font-semibold text-white tracking-[-0.03em] leading-none select-none">
             What happened lately
@@ -42,7 +46,7 @@ export default function AboutNews() {
           </span>
         </div>
 
-        {/* Interactive Click & Drag Infinite Loop Carousel */}
+        {/* ─── 2. Interactive Infinite Loop Carousel ─── */}
         <InteractiveInfiniteCarousel
           items={NEWS_ITEMS}
           gapClass="gap-[0.8333vw]"
@@ -52,9 +56,10 @@ export default function AboutNews() {
             <article 
               className="w-[280px] sm:w-[23.9583vw] shrink-0 flex flex-col group cursor-pointer"
               onClick={(e) => {
-                if (hasDraggedRef.current) {
+                if (hasDraggedRef?.current || window.__norqueCarouselDragged) {
                   e.preventDefault();
                   e.stopPropagation();
+                  return;
                 }
               }}
             >

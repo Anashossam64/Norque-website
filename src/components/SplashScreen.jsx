@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { splashLogoPaths } from './splashLogoPaths';
 
+/* ========================================================================= */
+/* SPLASH SCREEN COMPONENT                                                   */
+/* 2-second initial brand intro with staggered letter reveals                */
+/* ========================================================================= */
 export default function SplashScreen() {
   const [isVisible, setIsVisible] = useState(true);
 

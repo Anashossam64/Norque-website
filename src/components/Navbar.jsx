@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import CompactLogo from './CompactLogo';
 
+/* ========================================================================= */
+/* NAVBAR COMPONENT                                                          */
+/* 4-column responsive header with live Cairo GMT ticking clock              */
+/* ========================================================================= */
 export default function Navbar({ isIntroStarted = false, activePage = 'home', onNavigate }) {
+  /* ─── State: Cairo/Egypt Live GMT Clock ─── */
   const [egyptTime, setEgyptTime] = useState('');
 
   const handleLinkClick = (page, sectionId) => (e) => {
@@ -40,6 +45,7 @@ export default function Navbar({ isIntroStarted = false, activePage = 'home', on
     return () => clearInterval(interval);
   }, []);
 
+  /* ─── Render ─── */
   return (
     <motion.header 
       className="w-full z-20 pt-[0.8333vw] px-[1.6667vw]"
@@ -48,7 +54,7 @@ export default function Navbar({ isIntroStarted = false, activePage = 'home', on
       transition={{ duration: 0.8, ease: [0, 0.8, 0.2, 1] }}
     >
       <div className="w-full grid grid-cols-4 items-center">
-        {/* Column 1: Compact Logo */}
+        {/* Column 1: Compact Vector Logo */}
         <div className="flex items-center">
           <a 
             href="#" 
@@ -60,7 +66,7 @@ export default function Navbar({ isIntroStarted = false, activePage = 'home', on
           </a>
         </div>
 
-        {/* Column 2: Nav Buttons */}
+        {/* Column 2: Navigation Links */}
         <nav className="flex items-center space-x-[0.6944vw]" aria-label="Main Navigation">
           <a 
             href="#about" 
@@ -89,10 +95,10 @@ export default function Navbar({ isIntroStarted = false, activePage = 'home', on
           </a>
         </nav>
 
-        {/* Column 3: Spacer */}
+        {/* Column 3: Grid Balance Spacer */}
         <div></div>
 
-        {/* Column 4: Egypt Time */}
+        {/* Column 4: Egypt Live GMT Time */}
         <div className="text-right">
           <span className="text-[0.5556vw] font-semibold tracking-[-0.03em] text-white tabular-nums select-none">
             {egyptTime || 'Egypt, 03:48:10 PM GMT'}

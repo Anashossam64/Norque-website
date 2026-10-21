@@ -5,6 +5,10 @@ import newsSaudi from '../assets/news-saudi.png';
 import newsIdentity from '../assets/news-identity.png';
 import projectAxis from '../assets/project-axis.png';
 
+/* ========================================================================= */
+/* NEWS SECTION COMPONENT                                                    */
+/* "What's happening now" interactive infinite carousel                      */
+/* ========================================================================= */
 const newsItems = [
   {
     id: 1,
@@ -35,9 +39,9 @@ const newsItems = [
 export default function NewsSection() {
   return (
     <section className="w-full bg-black py-[2.7778vw]">
-      {/* Universal margin: 24px (1.6667vw) */}
+      {/* Universal Container Margin: 24px (1.6667vw) */}
       <div className="w-full px-[1.6667vw]">
-        {/* Header row */}
+        {/* Section Header */}
         <div className="flex justify-between items-end mb-[1.6667vw]">
           <h2 className="text-[3.1944vw] font-semibold tracking-[-0.03em] leading-none text-white select-none">
             What’s happening now
@@ -57,13 +61,14 @@ export default function NewsSection() {
             <article 
               className="w-[280px] sm:w-[23.9583vw] shrink-0 group cursor-pointer"
               onClick={(e) => {
-                if (hasDraggedRef.current) {
+                if (hasDraggedRef?.current || window.__norqueCarouselDragged) {
                   e.preventDefault();
                   e.stopPropagation();
+                  return;
                 }
               }}
             >
-              {/* Image */}
+              {/* Image Frame */}
               <div className="w-full overflow-hidden rounded-[0.1389vw] bg-[#121212] pointer-events-none">
                 <img 
                   src={item.image} 
@@ -74,7 +79,7 @@ export default function NewsSection() {
                 />
               </div>
 
-              {/* Text metadata */}
+              {/* Text Metadata */}
               <div className="pt-[0.6944vw] space-y-[0.4167vw] pointer-events-none select-none">
                 <h3 className="text-[12px] sm:text-[0.6944vw] font-semibold tracking-[-0.03em] text-white leading-[1.2]">
                   {item.title}

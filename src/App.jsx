@@ -6,7 +6,10 @@ import AboutPage from './components/AboutPage';
 import SplashScreen from './components/SplashScreen';
 import MuteButton from './components/MuteButton';
 
-// Module-level singletons to persist across React StrictMode dev mounts and page transitions
+/* ========================================================================= */
+/* 1. AUDIO ENGINE & GLOBAL SINGLETONS                                       */
+/* ========================================================================= */
+// Persistent across StrictMode remounts and seamless page transitions
 let introAudioInstance = null;
 let introAudioHasStarted = false;
 let globalIntroHasPlayed = false;
@@ -26,7 +29,11 @@ function playIntroAudio(isMuted = false) {
   }
 }
 
+/* ========================================================================= */
+/* 2. ROOT APPLICATION COMPONENT                                             */
+/* ========================================================================= */
 export default function App() {
+  /* ─── State Management ─── */
   const [currentPage, setCurrentPage] = useState('home');
   const [pendingSection, setPendingSection] = useState(null);
   const [hasIntroPlayed, setHasIntroPlayed] = useState(globalIntroHasPlayed);
@@ -34,6 +41,7 @@ export default function App() {
   const isMutedRef = useRef(false);
   const lenisRef = useRef(null);
 
+  /* ─── Audio Handlers ─── */
   const handleIntroComplete = () => {
     globalIntroHasPlayed = true;
     setHasIntroPlayed(true);
@@ -50,6 +58,9 @@ export default function App() {
     });
   };
 
+  /* ======================================================================= */
+  /* 3. NAVIGATION & SMOOTH SCROLL (LENIS)                                   */
+  /* ======================================================================= */
   const handleNavigate = (targetPage, sectionId = null) => {
     if (targetPage === currentPage) {
       if (sectionId) {
@@ -129,7 +140,10 @@ export default function App() {
     }
   }, [currentPage, pendingSection]);
 
-  // 1) Play "SFX Norque.mp3" when opening/refreshing the website (starts with splash, continues playing)
+  /* ======================================================================= */
+  /* 4. SOUND EFFECTS & INTERACTION TRIGGERS                                 */
+  /* ======================================================================= */
+  // Ambience SFX: Play "SFX Norque.mp3" on page load/unlock
   useEffect(() => {
     playIntroAudio(isMutedRef.current);
 
@@ -159,12 +173,15 @@ export default function App() {
     };
   }, []);
 
-  // 2) Play "SFX Norque_2.mp3" ONLY when clicking a button or clickable element (once, not looped)
+  // Click SFX: Play "SFX Norque_2.mp3" strictly on interactive UI clicks
   useEffect(() => {
     const clickAudio = new Audio(encodeURI('/audio/SFX Norque_2.mp3'));
     clickAudio.loop = false;
 
     const handleClick = (e) => {
+      // Prevent sound if user was dragging/scrolling a carousel
+      if (window.__norqueCarouselDragged) return;
+
       const target = e.target;
       if (!target || !(target instanceof Element)) return;
 
@@ -180,12 +197,15 @@ export default function App() {
       }
     };
 
-    window.addEventListener('click', handleClick, { capture: true });
+    window.addEventListener('click', handleClick);
     return () => {
-      window.removeEventListener('click', handleClick, { capture: true });
+      window.removeEventListener('click', handleClick);
     };
   }, []);
 
+  /* ======================================================================= */
+  /* 5. MAIN RENDER WITH CINEMATIC PAGE TRANSITIONS                          */
+  /* ======================================================================= */
   return (
     <div className="relative min-h-screen bg-black text-white font-beausite selection:bg-white selection:text-black overflow-x-clip">
       {/* Initial splash screen on page load */}
@@ -209,7 +229,7 @@ export default function App() {
             scale: 1,
             transition: {
               duration: 0.5,
-              ease: [0.16, 1, 0.3, 1] // Smooth cinematic deceleration zoom-in
+              ease: [0.16, 1, 0.3, 1] // Deceleration zoom-in
             }
           }}
           exit={{ 
@@ -217,7 +237,7 @@ export default function App() {
             scale: 0.94,
             transition: {
               duration: 0.45,
-              ease: [0.4, 0, 0.2, 1] // Smooth acceleration zoom-out to black
+              ease: [0.4, 0, 0.2, 1] // Acceleration zoom-out to black
             }
           }}
           className="w-full origin-center"

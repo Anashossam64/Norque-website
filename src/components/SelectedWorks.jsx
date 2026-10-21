@@ -4,6 +4,10 @@ import projectFusionForm from '../assets/project-fusion-form.png';
 import projectStudioJuzenas from '../assets/project-studio-juzenas.png';
 import projectMms from '../assets/project-mms.png';
 
+/* ========================================================================= */
+/* SELECTED WORKS COMPONENT                                                  */
+/* 2-column showcase grid presenting primary studio case studies             */
+/* ========================================================================= */
 const projects = [
   {
     id: 'axis',
@@ -38,18 +42,18 @@ const projects = [
 export default function SelectedWorks() {
   return (
     <section id="works" className="w-full bg-black py-[2.7778vw]">
-      {/* Universal margin: 24px (1.6667vw) */}
+      {/* Universal Container Margin: 24px (1.6667vw) */}
       <div className="w-full px-[1.6667vw]">
-        {/* Section Header */}
+        {/* Section Heading */}
         <h2 className="text-[3.1944vw] font-medium tracking-[-0.03em] leading-none text-white mb-[1.6667vw]">
           SELECTED WORKS (04)
         </h2>
 
-        {/* 2-Column Project Grid */}
+        {/* 2-Column Responsive Portfolio Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[0.8333vw] gap-y-[2.5vw]">
           {projects.map((project) => (
             <article key={project.id} className="group cursor-pointer">
-              {/* Image Frame */}
+              {/* Media Card */}
               <div className="w-full overflow-hidden rounded-[0.1389vw] bg-[#121212]">
                 <img 
                   src={project.image} 
@@ -59,7 +63,7 @@ export default function SelectedWorks() {
                 />
               </div>
 
-              {/* Metadata */}
+              {/* Project Meta Details */}
               <div className="pt-[0.6944vw]">
                 <div className="flex justify-between items-baseline">
                   <h3 className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-white">

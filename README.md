@@ -1,8 +1,10 @@
 # NORQUE STUDIOS™ — Official Website
 
-A 1:1 pixel-perfect recreation of the Figma design for **NORQUE STUDIOS™** built with React, Vite, and Tailwind CSS.
+> A 1:1 pixel-perfect recreation of the Figma design for **NORQUE STUDIOS™** built with React 18, Vite, Tailwind CSS, and Framer Motion.
 
-## 🚀 Getting Started
+---
+
+## 🚀 Quick Start
 
 ### 1. Install Dependencies
 ```bash
@@ -13,7 +15,7 @@ npm install
 ```bash
 npm run dev
 ```
-The application will start on `http://localhost:3000`.
+The application will launch on `http://localhost:3000`.
 
 ### 3. Build for Production
 ```bash
@@ -23,33 +25,51 @@ npm run preview
 
 ---
 
-## 📐 Design Specifications (1:1 with Figma)
+## 📚 Handover & Architecture Documentation
 
-* **Canvas Scale**: 1440px grid system with 12px margins and 4-column layout
-* **Theme**: Authentic deep dark aesthetic (`#000000` background with `#121212` / `#262626` / `#363636` structural accents)
-* **Logos**: Extracted directly from Figma binary vector network blobs into lossless mathematical SVGs (`MainLogo.jsx` and `CompactLogo.jsx`)
-* **Assets**: All high-definition raster assets extracted directly from the Figma package into `src/assets/`
-* **Typography**: Matched to *Beausite Classic* / *Inter* with exact `-0.03em` (`-3%`) letter tracking and proportional leading
-* **Dynamic Features**: Live Cairo/Egypt GMT clock with real-time seconds ticking in the navigation bar
+For complete technical specifications, component workflows, sound physics, and daily sprint logs, refer to the documentation suite in [`docs/`](./docs/):
+
+- **[`docs/HANDOVER.md`](./docs/HANDOVER.md)** — Master onboarding guide for AI models & developers.
+- **[`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)** — System diagrams, page transition lifecycle, and carousel geometry.
+- **[`docs/DAY_1_LOG.md`](./docs/DAY_1_LOG.md)** — Day 1 development log (Genesis & Homepage).
+- **[`docs/DAY_2_LOG.md`](./docs/DAY_2_LOG.md)** — Day 2 development log (Version 0.2v: About Page, Infinite Carousels, Audio Engine).
+- **[`docs/DAY_3_LOG.md`](./docs/DAY_3_LOG.md)** — Day 3 development log (Size Optimization, Project Reorganization, Handover Docs).
 
 ---
 
 ## 🗂 Project Structure
 
 ```
-src/
-├── assets/                  # Extracted native images & graphics
-├── components/
-│   ├── CompactLogo.jsx      # Top navigation vector logo
-│   ├── MainLogo.jsx         # Full-width brand vector logo
-│   ├── Navbar.jsx           # Top navigation bar with live Egypt clock
-│   ├── Hero.jsx             # Hero section with statement & giant logo
-│   ├── Showcase.jsx         # Recent works card & brand manifesto
-│   ├── SelectedWorks.jsx    # 4-project portfolio grid with metadata
-│   ├── Philosophy.jsx       # 2-column typographic intention statement
-│   ├── NewsSection.jsx      # "What's happening now" 4-column editorial grid
-│   └── Footer.jsx           # Contact callout, bottom logo & directory
-├── App.jsx                  # Main Homepage view
-├── index.css                # Base Tailwind & custom typography rules
-└── main.jsx                 # React root entry
+norque-studios/
+├── docs/                        # AI & Developer Handover Documentation
+├── public/                      # Static assets (audio SFX & About photos)
+│   ├── audio/
+│   └── images/about/
+├── src/
+│   ├── assets/                  # Brand vectors, video, case study media, Beausite fonts
+│   │   └── fonts/
+│   ├── components/              # Modular UI components
+│   │   ├── about/               # About page sub-components (Hero, Team, News)
+│   │   ├── AboutPage.jsx        # About view
+│   │   ├── HomePage.jsx         # Homepage view
+│   │   ├── Hero.jsx             # Video hero with sequential typography
+│   │   ├── Showcase.jsx         # 200vh pinned uncropped reveal
+│   │   ├── SelectedWorks.jsx    # 4-project portfolio grid
+│   │   ├── Philosophy.jsx       # Studio manifesto
+│   │   ├── NewsSection.jsx      # Infinite loop news carousel
+│   │   ├── Footer.jsx           # Universal inquiry footer
+│   │   ├── Navbar.jsx           # Header with real-time Cairo GMT clock
+│   │   ├── MuteButton.jsx       # Optical Liquid Glass refraction toggle
+│   │   ├── SplashScreen.jsx     # Initial load brand reveal
+│   │   └── InteractiveInfiniteCarousel.jsx # Multi-buffer physics carousel
+│   ├── App.jsx                  # Main router, audio orchestrator, cinematic transitions
+│   ├── index.css                # Base Tailwind & custom typography rules
+│   └── main.jsx                 # React root entry
+├── index.html
+├── package.json
+├── postcss.config.js
+├── tailwind.config.js
+├── vite.config.js
+├── README.md
+└── VERSION.md
 ```
