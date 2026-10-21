@@ -48,7 +48,7 @@ export default function Navbar({ isIntroStarted = false, activePage = 'home', on
   /* ─── Render ─── */
   return (
     <motion.header 
-      className="w-full z-20 pt-[0.8333vw] px-[1.6667vw]"
+      className="fixed top-0 left-0 right-0 z-40 pt-[0.8333vw] pb-[0.8333vw] px-[1.6667vw] bg-black/60 backdrop-blur-md transition-all duration-300"
       initial={isIntroStarted ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 }}
       animate={isIntroStarted ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 }}
       transition={{ duration: 0.8, ease: [0, 0.8, 0.2, 1] }}

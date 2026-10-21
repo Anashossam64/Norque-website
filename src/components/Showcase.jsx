@@ -128,11 +128,13 @@ export default function Showcase() {
               >
                 Behance
               </a>{" "}
-              or read our{" "}
-              <a href="#philosophy" className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer">
-                Philosophy
+              or say hello at{" "}
+              <a 
+                href="mailto:hello@norquestudios.com" 
+                className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer"
+              >
+                hello@norquestudios.com
               </a>
-              .
             </p>
           </div>
         </div>

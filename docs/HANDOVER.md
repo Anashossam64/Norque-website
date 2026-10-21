@@ -73,8 +73,8 @@ norque-studios/
 │   │   ├── logoPaths.js              # Bezier path vectors for hero logo
 │   │   ├── MainLogo.jsx              # Vector main brand mark component
 │   │   ├── MuteButton.jsx            # Optical Liquid Glass refraction audio toggle
-│   │   ├── Navbar.jsx                # Responsive header with live Cairo GMT clock
-│   │   ├── NewsSection.jsx           # Homepage "What's happening now" carousel
+│   │   ├── Navbar.jsx                # Pinned global header with live Cairo GMT clock
+│   │   ├── NewsSection.jsx           # Homepage "WHAT’S HAPPENING NOW" static 4-column grid
 │   │   ├── Philosophy.jsx            # Typographic intention statement
 │   │   ├── SelectedWorks.jsx         # 4-project 2-column showcase grid
 │   │   ├── Showcase.jsx              # 200vh pinned uncropped reveal container

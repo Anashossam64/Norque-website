@@ -25,7 +25,7 @@ const projects = [
   },
   {
     id: 'studio-juzenas',
-    title: 'STUDIO JUZėNAS® - Architecture Studio',
+    title: 'STUDIO JUZĖNAS® - Architecture Studio',
     location: 'Lithuania',
     category: 'Brand Development | UI/UX Design & Web Development',
     image: projectStudioJuzenas,
@@ -45,8 +45,9 @@ export default function SelectedWorks() {
       {/* Universal Container Margin: 24px (1.6667vw) */}
       <div className="w-full px-[1.6667vw]">
         {/* Section Heading */}
-        <h2 className="text-[3.1944vw] font-medium tracking-[-0.03em] leading-none text-white mb-[1.6667vw]">
-          SELECTED WORKS (04)
+        <h2 className="text-[3.1944vw] font-medium tracking-[-0.03em] leading-none text-white mb-[1.6667vw] flex items-start">
+          <span>SELECTED WORKS</span>
+          <span className="text-[1.3889vw] font-medium ml-[0.35vw] leading-none tracking-[-0.03em] select-none">(04)</span>
         </h2>
 
         {/* 2-Column Responsive Portfolio Grid */}
@@ -73,7 +74,7 @@ export default function SelectedWorks() {
                     {project.location}
                   </span>
                 </div>
-                <p className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-[#747474] pt-[0.2083vw]">
+                <p className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-[#747474] pt-[0.5556vw]">
                   {project.category}
                 </p>
               </div>

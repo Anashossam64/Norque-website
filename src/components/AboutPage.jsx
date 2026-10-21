@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Navbar from './Navbar';
 import AboutHero from './about/AboutHero';
 import AboutTeam from './about/AboutTeam';
 import AboutNews from './about/AboutNews';
@@ -16,14 +15,7 @@ export default function AboutPage({ onNavigate }) {
 
   return (
     <div className="w-full min-h-screen bg-black text-white font-beausite selection:bg-white selection:text-black overflow-x-clip">
-      {/* 1. Header Navigation */}
-      <Navbar 
-        isIntroStarted={true} 
-        activePage="about" 
-        onNavigate={onNavigate} 
-      />
-
-      {/* 2. Main Content Sections */}
+      {/* Main Content Sections */}
       <main className="w-full">
         {/* Section A: Manifesto & Working Countries */}
         <AboutHero />
@@ -35,7 +27,7 @@ export default function AboutPage({ onNavigate }) {
         <AboutNews />
       </main>
 
-      {/* 3. Universal Shared Footer */}
+      {/* Shared Footer */}
       <Footer />
     </div>
   );

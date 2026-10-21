@@ -1,5 +1,4 @@
 import React from 'react';
-import InteractiveInfiniteCarousel from './InteractiveInfiniteCarousel';
 import newsLithuania from '../assets/news-lithuania.png';
 import newsSaudi from '../assets/news-saudi.png';
 import newsIdentity from '../assets/news-identity.png';
@@ -7,7 +6,7 @@ import projectAxis from '../assets/project-axis.png';
 
 /* ========================================================================= */
 /* NEWS SECTION COMPONENT                                                    */
-/* "What's happening now" interactive infinite carousel                      */
+/* "WHAT’S HAPPENING NOW" static 4-column studio updates showcase            */
 /* ========================================================================= */
 const newsItems = [
   {
@@ -38,59 +37,45 @@ const newsItems = [
 
 export default function NewsSection() {
   return (
-    <section className="w-full bg-black py-[2.7778vw]">
+    <section className="w-full bg-black pt-[2.7778vw] pb-[8.3333vw]">
       {/* Universal Container Margin: 24px (1.6667vw) */}
       <div className="w-full px-[1.6667vw]">
         {/* Section Header */}
         <div className="flex justify-between items-end mb-[1.6667vw]">
-          <h2 className="text-[3.1944vw] font-semibold tracking-[-0.03em] leading-none text-white select-none">
-            What’s happening now
+          <h2 className="text-[3.1944vw] font-semibold tracking-[-0.03em] leading-none text-white select-none uppercase">
+            WHAT’S HAPPENING NOW
           </h2>
           <span className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-[#747474] pb-[0.2778vw] select-none">
             Below you will find latest news
           </span>
         </div>
 
-        {/* Interactive Click & Drag Infinite Loop Carousel */}
-        <InteractiveInfiniteCarousel
-          items={newsItems}
-          gapClass="gap-[0.8333vw]"
-          paddingRightClass="pr-[0.8333vw]"
-          speed={-0.75}
-          renderItem={(item, idx, hasDraggedRef) => (
-            <article 
-              className="w-[280px] sm:w-[23.9583vw] shrink-0 group cursor-pointer"
-              onClick={(e) => {
-                if (hasDraggedRef?.current || window.__norqueCarouselDragged) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  return;
-                }
-              }}
-            >
-              {/* Image Frame */}
-              <div className="w-full overflow-hidden rounded-[0.1389vw] bg-[#121212] pointer-events-none">
+        {/* Static 4-Column Updates Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[0.8333vw]">
+          {newsItems.map((item) => (
+            <article key={item.id} className="w-full">
+              {/* Image Frame - Static with no zoom hover animation */}
+              <div className="w-full overflow-hidden rounded-[0.1389vw] bg-[#121212]">
                 <img 
                   src={item.image} 
                   alt={item.title} 
-                  draggable={false}
-                  className="w-full aspect-square object-cover rounded-[0.1389vw] transition-transform duration-500 ease-out group-hover:scale-[1.02] select-none"
+                  className="w-full aspect-square object-cover rounded-[0.1389vw]"
                   loading="lazy"
                 />
               </div>
 
               {/* Text Metadata */}
-              <div className="pt-[0.6944vw] space-y-[0.4167vw] pointer-events-none select-none">
+              <div className="pt-[0.6944vw] space-y-[0.4167vw]">
                 <h3 className="text-[12px] sm:text-[0.6944vw] font-semibold tracking-[-0.03em] text-white leading-[1.2]">
                   {item.title}
                 </h3>
-                <p className="text-[11px] sm:text-[0.6944vw] font-semibold tracking-[-0.03em] text-white leading-[1.2]">
+                <p className="text-[11px] sm:text-[0.6944vw] font-semibold tracking-[-0.03em] text-[#747474] leading-[1.2]">
                   {item.description}
                 </p>
               </div>
             </article>
-          )}
-        />
+          ))}
+        </div>
       </div>
     </section>
   );

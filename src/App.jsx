@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import HomePage from './components/HomePage';
 import AboutPage from './components/AboutPage';
 import SplashScreen from './components/SplashScreen';
+import Navbar from './components/Navbar';
 import MuteButton from './components/MuteButton';
 
 /* ========================================================================= */
@@ -38,9 +39,22 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [pendingSection, setPendingSection] = useState(null);
   const [hasIntroPlayed, setHasIntroPlayed] = useState(globalIntroHasPlayed);
+  const [isIntroStarted, setIsIntroStarted] = useState(globalIntroHasPlayed);
   const [isMuted, setIsMuted] = useState(false);
   const isMutedRef = useRef(false);
   const lenisRef = useRef(null);
+
+  /* ─── Intro Animation Synchronization ─── */
+  useEffect(() => {
+    if (globalIntroHasPlayed) {
+      setIsIntroStarted(true);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setIsIntroStarted(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   /* ─── Audio Handlers ─── */
   const handleIntroComplete = () => {
@@ -212,6 +226,13 @@ export default function App() {
     <div className="relative min-h-screen bg-black text-white font-beausite selection:bg-white selection:text-black overflow-x-clip">
       {/* Initial splash screen on page load */}
       <SplashScreen />
+
+      {/* Pinned Global Header Navigation */}
+      <Navbar 
+        isIntroStarted={hasIntroPlayed || isIntroStarted} 
+        activePage={currentPage} 
+        onNavigate={handleNavigate} 
+      />
 
       {/* Cinematic 1-second Page Transition: Zoom-out & Fade to Black -> Swap -> Fade in & Zoom-in */}
       <AnimatePresence 
