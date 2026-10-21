@@ -3,7 +3,7 @@ import { Volume2, VolumeX } from 'lucide-react';
 
 /* ========================================================================= */
 /* MUTE BUTTON COMPONENT                                                     */
-/* Liquid Glass optical refraction shader + global audio mute toggle         */
+/* Darker satin liquid glass optical shader + global audio mute toggle       */
 /* ========================================================================= */
 export default function MuteButton({ isMuted, onToggle }) {
   const [lensDataUrl, setLensDataUrl] = useState('');
@@ -89,7 +89,7 @@ export default function MuteButton({ isMuted, onToggle }) {
         </defs>
       </svg>
 
-      {/* ─── Floating Interactive Button ─── */}
+      {/* ─── Floating Interactive Button with Dark Satin Glass ─── */}
       <aside 
         aria-label="Audio controls" 
         className="fixed bottom-[1.6667vw] right-[1.6667vw] z-50 pointer-events-auto"
@@ -100,19 +100,40 @@ export default function MuteButton({ isMuted, onToggle }) {
           aria-label={isMuted ? 'Unmute audio' : 'Mute audio'}
           style={{
             backdropFilter: lensDataUrl 
-              ? 'url(#norque-liquid-lens-circle) blur(4px) brightness(1.06)' 
-              : 'blur(20px) brightness(1.08)',
+              ? 'url(#norque-liquid-lens-circle) blur(6px) brightness(0.82) contrast(1.12)' 
+              : 'blur(20px) brightness(0.82)',
             WebkitBackdropFilter: lensDataUrl 
-              ? 'url(#norque-liquid-lens-circle) blur(4px) brightness(1.06)' 
-              : 'blur(20px) brightness(1.08)',
+              ? 'url(#norque-liquid-lens-circle) blur(6px) brightness(0.82) contrast(1.12)' 
+              : 'blur(20px) brightness(0.82)',
           }}
-          className="relative group w-[3.3333vw] h-[3.3333vw] min-w-[48px] min-h-[48px] rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 ease-out border border-white/25 hover:border-white/50 bg-white/[0.04] hover:bg-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_2px_rgba(255,255,255,0.4),inset_0_-1px_2px_rgba(0,0,0,0.4)] active:scale-95"
+          className="relative group w-[3.3333vw] h-[3.3333vw] min-w-[48px] min-h-[48px] rounded-full flex items-center justify-center cursor-pointer transition-all duration-500 ease-out border border-white/20 hover:border-white/40 bg-[#0c0c0e]/50 hover:bg-[#0c0c0e]/40 shadow-[0_12px_40px_rgba(0,0,0,0.7),inset_0_1.5px_2px_rgba(255,255,255,0.35),inset_0_-1.5px_3px_rgba(0,0,0,0.6)] active:scale-95 overflow-hidden"
         >
-          {isMuted ? (
-            <VolumeX className="w-[1.25vw] h-[1.25vw] min-w-[18px] min-h-[18px] text-white/70 group-hover:text-white transition-colors" />
-          ) : (
-            <Volume2 className="w-[1.25vw] h-[1.25vw] min-w-[18px] min-h-[18px] text-white/90 group-hover:text-white transition-colors" />
-          )}
+          {/* Dark Satin Frosted Glass Diffusion Layer */}
+          <div 
+            className="absolute inset-0 rounded-full pointer-events-none bg-gradient-to-b from-white/[0.08] via-black/25 to-black/60 mix-blend-overlay transition-opacity duration-500" 
+            aria-hidden="true" 
+          />
+
+          {/* Deep Smoked Satin Tint */}
+          <div 
+            className="absolute inset-0 rounded-full pointer-events-none bg-black/25 transition-colors duration-500 group-hover:bg-black/15" 
+            aria-hidden="true" 
+          />
+
+          {/* Specular Edge Highlights */}
+          <div 
+            className="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),inset_0_-1px_2px_rgba(0,0,0,0.8)]" 
+            aria-hidden="true" 
+          />
+
+          {/* Audio State Icon */}
+          <div className="relative z-10">
+            {isMuted ? (
+              <VolumeX className="w-[1.25vw] h-[1.25vw] min-w-[18px] min-h-[18px] text-white/70 group-hover:text-white transition-colors" />
+            ) : (
+              <Volume2 className="w-[1.25vw] h-[1.25vw] min-w-[18px] min-h-[18px] text-white/90 group-hover:text-white transition-colors" />
+            )}
+          </div>
         </button>
       </aside>
     </>
