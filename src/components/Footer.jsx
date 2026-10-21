@@ -8,8 +8,8 @@ import MainLogo from './MainLogo';
 export default function Footer() {
   return (
     <footer id="contact" className="w-full bg-black">
-      {/* Universal Container Margin: 24px (1.6667vw) */}
-      <div className="w-full px-[1.6667vw]">
+      {/* Universal Container Margin: 12px (0.8333vw) */}
+      <div className="w-full px-[0.8333vw]">
         {/* ─── 1. Top Callout Section ─── */}
         <div className="border-t border-[#363636] pt-[1.6667vw]">
           <div className="max-w-[23.9583vw]">

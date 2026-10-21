@@ -3,8 +3,65 @@ import { motion } from 'framer-motion';
 import CompactLogo from './CompactLogo';
 
 /* ========================================================================= */
+/* STAGGERED MASKED NAV LINK BUTTON COMPONENT                                */
+/* Letters stagger upward while duplicated masked letters rise from below    */
+/* ========================================================================= */
+function StaggeredNavButton({ label, onClick }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const chars = label.split('');
+
+  return (
+    <a
+      href={`#${label.toLowerCase()}`}
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative inline-flex items-center text-[0.5556vw] font-semibold tracking-normal text-white cursor-pointer select-none py-[0.1vw]"
+    >
+      <span className="inline-flex overflow-hidden leading-tight">
+        {chars.map((char, index) => (
+          <span 
+            key={index} 
+            className="relative inline-block overflow-hidden"
+          >
+            {/* Primary Character: Staggers upward out of view on hover */}
+            <motion.span
+              className="inline-block"
+              initial={false}
+              animate={{ y: isHovered ? '-100%' : '0%' }}
+              transition={{
+                duration: 0.35,
+                ease: [0, 0.8, 0.2, 1],
+                delay: isHovered ? index * 0.025 : (chars.length - 1 - index) * 0.015,
+              }}
+            >
+              {char === ' ' ? '\u00A0' : char}
+            </motion.span>
+
+            {/* Masked Duplicate Character: Staggers in from bottom on hover */}
+            <motion.span
+              className="absolute top-0 left-0 inline-block text-white"
+              initial={false}
+              animate={{ y: isHovered ? '0%' : '100%' }}
+              transition={{
+                duration: 0.35,
+                ease: [0, 0.8, 0.2, 1],
+                delay: isHovered ? index * 0.025 : (chars.length - 1 - index) * 0.015,
+              }}
+              aria-hidden="true"
+            >
+              {char === ' ' ? '\u00A0' : char}
+            </motion.span>
+          </span>
+        ))}
+      </span>
+    </a>
+  );
+}
+
+/* ========================================================================= */
 /* NAVBAR COMPONENT                                                          */
-/* 4-column responsive header with live Cairo GMT ticking clock              */
+/* 4-column responsive header with universal 12px (0.8333vw) margins         */
 /* ========================================================================= */
 export default function Navbar({ 
   isIntroStarted = false, 
@@ -51,6 +108,28 @@ export default function Navbar({
     return () => clearInterval(interval);
   }, []);
 
+  /* ─── Pinned Header Variants with 0.5s Delayed Entrance ─── */
+  const pinnedVariants = {
+    hidden: {
+      y: '-100%',
+      opacity: 0,
+      transition: {
+        duration: 0.35,
+        ease: [0, 0.8, 0.2, 1],
+        delay: 0,
+      },
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0, 0.8, 0.2, 1],
+        delay: activePage === 'home' ? 0.5 : 0,
+      },
+    },
+  };
+
   /* ─── Render ─── */
   return (
     <motion.header 
@@ -58,22 +137,24 @@ export default function Navbar({
         isPinned 
           ? 'fixed top-0 left-0 right-0 z-40 bg-black/60 backdrop-blur-md' 
           : 'w-full z-20'
-      } h-[2.5vw] px-[1.6667vw] flex items-center transition-colors duration-300`}
+      } h-[2.5vw] px-[0.8333vw] flex items-center transition-colors duration-300`}
       style={{ pointerEvents: isPinned && !isVisible ? 'none' : 'auto' }}
+      variants={isPinned ? pinnedVariants : undefined}
       initial={
         isPinned 
-          ? { y: '-100%', opacity: 0 } 
+          ? 'hidden' 
           : (isIntroStarted ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 })
       }
       animate={
         isPinned 
-          ? (isVisible ? { y: 0, opacity: 1 } : { y: '-100%', opacity: 0 }) 
+          ? (isVisible ? 'visible' : 'hidden') 
           : (isIntroStarted ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 })
       }
-      transition={{ 
-        duration: isPinned ? 0.45 : 0.8, 
-        ease: isPinned ? [0.16, 1, 0.3, 1] : [0, 0.8, 0.2, 1] 
-      }}
+      transition={
+        !isPinned 
+          ? { duration: 0.8, ease: [0, 0.8, 0.2, 1] } 
+          : undefined
+      }
     >
       <div className="w-full grid grid-cols-4 items-center">
         {/* Column 1: Compact Vector Logo */}
@@ -88,33 +169,20 @@ export default function Navbar({
           </a>
         </div>
 
-        {/* Column 2: Navigation Links */}
+        {/* Column 2: Navigation Links with Staggered Masked Text Animation */}
         <nav className="flex items-center space-x-[0.6944vw]" aria-label="Main Navigation">
-          <a 
-            href="#about" 
-            onClick={handleLinkClick('about')}
-            className={`text-[0.5556vw] font-semibold tracking-normal transition-opacity cursor-pointer ${
-              activePage === 'about' ? 'text-white underline underline-offset-4 decoration-white/40' : 'text-white/80 hover:text-white'
-            }`}
-          >
-            ABOUT
-          </a>
-          <a 
-            href="#works" 
-            onClick={handleLinkClick('home', 'works')}
-            className={`text-[0.5556vw] font-semibold tracking-normal transition-opacity cursor-pointer ${
-              activePage === 'home' ? 'text-white' : 'text-white/80 hover:text-white'
-            }`}
-          >
-            WORKS
-          </a>
-          <a 
-            href="#services" 
-            onClick={handleLinkClick('home', 'services')}
-            className="text-[0.5556vw] font-semibold text-white/80 hover:text-white tracking-normal transition-opacity cursor-pointer"
-          >
-            SERVICES
-          </a>
+          <StaggeredNavButton 
+            label="About" 
+            onClick={handleLinkClick('about')} 
+          />
+          <StaggeredNavButton 
+            label="Works" 
+            onClick={handleLinkClick('home', 'works')} 
+          />
+          <StaggeredNavButton 
+            label="services" 
+            onClick={handleLinkClick('home', 'services')} 
+          />
         </nav>
 
         {/* Column 3: Grid Balance Spacer */}
@@ -122,8 +190,8 @@ export default function Navbar({
 
         {/* Column 4: Egypt Live GMT Time */}
         <div className="text-right">
-          <span className="uppercase text-[0.5556vw] font-semibold tracking-[-0.03em] text-white tabular-nums select-none">
-            {egyptTime || 'EGYPT, 03:48:10 PM GMT'}
+          <span className="text-[0.5556vw] font-semibold tracking-[-0.03em] text-white tabular-nums select-none">
+            {egyptTime || 'Egypt, 03:48:10 PM GMT'}
           </span>
         </div>
       </div>

@@ -92,7 +92,7 @@ export default function MuteButton({ isMuted, onToggle }) {
       {/* ─── Floating Interactive Button with Dark Satin Glass ─── */}
       <aside 
         aria-label="Audio controls" 
-        className="fixed bottom-[1.6667vw] right-[1.6667vw] z-50 pointer-events-auto"
+        className="fixed bottom-[0.8333vw] right-[0.8333vw] z-50 pointer-events-auto"
       >
         <button
           type="button"

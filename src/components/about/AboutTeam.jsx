@@ -31,8 +31,8 @@ const TEAM = [
 
 export default function AboutTeam() {
   return (
-    <section className="w-full py-[4.1667vw] px-[0.8333vw] sm:px-[0.8333vw]">
-      <div className="w-full max-w-[1416px] mx-auto">
+    <section className="w-full py-[4.1667vw] px-[0.8333vw]">
+      <div className="w-full">
         {/* Section Heading */}
         <h2 className="text-[32px] sm:text-[3.1944vw] font-semibold text-white tracking-[-0.03em] leading-none mb-[3.4722vw] uppercase">
           PPL BEHIND NRQ™

@@ -81,8 +81,8 @@ export default function Showcase({ onRevealCompleteChange }) {
     <section className="w-full bg-black">
       {/* 200vh Pinning Track */}
       <div ref={pinTrackRef} className="relative w-full h-[200vh]">
-        {/* Sticky Fullscreen Viewport Window matching universal 1.6667vw horizontal margins */}
-        <div className="sticky top-0 w-full h-screen flex flex-col justify-center items-center overflow-hidden px-[1.6667vw] z-10 select-none">
+        {/* Sticky Fullscreen Viewport Window matching universal 12px (0.8333vw) horizontal margins */}
+        <div className="sticky top-0 w-full h-screen flex flex-col justify-center items-center overflow-hidden px-[0.8333vw] z-10 select-none">
           <div className="w-full flex flex-col">
             {/* Reveal Bounding Box - expands to 100% full width flush with universal margins */}
             <motion.div 
@@ -115,7 +115,7 @@ export default function Showcase({ onRevealCompleteChange }) {
       </div>
 
       {/* Brand Statement / Manifesto follows after unpinning */}
-      <div className="w-full px-[1.6667vw]">
+      <div className="w-full px-[0.8333vw]">
         <div className="pt-[4.1667vw] pb-[9.0278vw]">
           <div className="max-w-[73.3333vw] space-y-[1.5278vw]">
             <p className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">

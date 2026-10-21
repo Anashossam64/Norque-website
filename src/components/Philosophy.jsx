@@ -7,8 +7,8 @@ import React from 'react';
 export default function Philosophy() {
   return (
     <section className="w-full bg-black py-[5.4167vw]">
-      {/* Universal Container Margin: 24px (1.6667vw) */}
-      <div className="w-full px-[1.6667vw]">
+      {/* Universal Container Margin: 12px (0.8333vw) */}
+      <div className="w-full px-[0.8333vw]">
         <div className="max-w-[48.75vw] space-y-[1.5278vw]">
           <p className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
             We believe good work begins with intention.

@@ -15,11 +15,11 @@ const COUNTRIES = [
 
 export default function AboutHero() {
   return (
-    <section className="w-full pt-[4.1667vw] pb-[6.25vw] px-[0.8333vw] sm:px-[0.8333vw]">
-      <div className="w-full max-w-[1416px] mx-auto grid grid-cols-1 lg:grid-cols-4 gap-y-12 lg:gap-x-[0.8333vw]">
+    <section className="w-full pt-[4.1667vw] pb-[6.25vw] px-[0.8333vw]">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-y-12 lg:gap-x-[0.8333vw]">
         {/* ─── Column 1 & 2: Manifesto & Aesthetics Media ─── */}
         <div className="lg:col-span-2 flex flex-col justify-between">
-          <div className="max-w-[702px] w-full">
+          <div className="w-full">
             <span className="block text-[11px] sm:text-[0.6944vw] font-semibold text-[#747474] tracking-[-0.03em] uppercase mb-[1.3889vw]">
               [ ABOUT ]
             </span>

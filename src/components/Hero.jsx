@@ -75,7 +75,7 @@ export default function Hero({ onNavigate, hasIntroPlayed = false, onIntroComple
       <div className="flex-1"></div>
 
       {/* ─── 4. Bottom Main Logo & Brand Statement ─── */}
-      <div className="relative z-10 w-full px-[1.6667vw] pb-[1.6667vw]">
+      <div className="relative z-10 w-full px-[0.8333vw] pb-[0.8333vw]">
         {/* Top Text Row Above Giant Logo */}
         <div className="flex justify-between items-end mb-[2.0833vw] overflow-hidden">
           {/* Left Text: "BUILT FOR BRANDS THAT WANT / SOMETHING REAL" */}

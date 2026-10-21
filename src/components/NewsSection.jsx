@@ -38,8 +38,8 @@ const newsItems = [
 export default function NewsSection() {
   return (
     <section className="w-full bg-black pt-[2.7778vw] pb-[8.3333vw]">
-      {/* Universal Container Margin: 24px (1.6667vw) */}
-      <div className="w-full px-[1.6667vw]">
+      {/* Universal Container Margin: 12px (0.8333vw) */}
+      <div className="w-full px-[0.8333vw]">
         {/* Section Header */}
         <div className="flex justify-between items-end mb-[1.6667vw]">
           <h2 className="text-[3.1944vw] font-semibold tracking-[-0.03em] leading-none text-white select-none uppercase">

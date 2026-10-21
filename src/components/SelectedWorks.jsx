@@ -42,8 +42,8 @@ const projects = [
 export default function SelectedWorks() {
   return (
     <section id="works" className="w-full bg-black py-[2.7778vw]">
-      {/* Universal Container Margin: 24px (1.6667vw) */}
-      <div className="w-full px-[1.6667vw]">
+      {/* Universal Container Margin: 12px (0.8333vw) */}
+      <div className="w-full px-[0.8333vw]">
         {/* Section Heading */}
         <h2 className="text-[3.1944vw] font-medium tracking-[-0.03em] leading-none text-white mb-[1.6667vw] flex items-start">
           <span>SELECTED WORKS</span>
