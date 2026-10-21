@@ -6,12 +6,14 @@ import recentWorksGif from '../assets/recent-works.gif';
 /* SHOWCASE SECTION COMPONENT                                                */
 /* Pinned 200vh track with scroll-distance driven reveal of recent works     */
 /* ========================================================================= */
-export default function Showcase() {
+export default function Showcase({ onRevealCompleteChange }) {
   const pinTrackRef = useRef(null);
   const scrollProgress = useMotionValue(0);
 
   /* ─── 1. Scroll-Distance Tracking ─── */
   useEffect(() => {
+    let lastComplete = false;
+
     const handleScroll = () => {
       const el = pinTrackRef.current;
       if (!el) return;
@@ -28,6 +30,14 @@ export default function Showcase() {
 
       const p = Math.max(0, Math.min(1, (window.scrollY - startY) / (endY - startY)));
       scrollProgress.set(p);
+
+      const isComplete = p >= 0.99;
+      if (isComplete !== lastComplete) {
+        lastComplete = isComplete;
+        if (onRevealCompleteChange) {
+          onRevealCompleteChange(isComplete);
+        }
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -38,7 +48,7 @@ export default function Showcase() {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
     };
-  }, [scrollProgress]);
+  }, [scrollProgress, onRevealCompleteChange]);
 
   /* ─── 2. Motion Value Interpolations ─── */
   // Clip path expands smoothly from cropped boundary (0%) to 100% full width matching original margins

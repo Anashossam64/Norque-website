@@ -15,6 +15,9 @@ export default function AboutPage({ onNavigate }) {
 
   return (
     <div className="w-full min-h-screen bg-black text-white font-beausite selection:bg-white selection:text-black overflow-x-clip">
+      {/* Spacer to make up for 36px (2.5vw) pinned navigation bar */}
+      <div className="w-full h-[2.5vw]" aria-hidden="true" />
+
       {/* Main Content Sections */}
       <main className="w-full">
         {/* Section A: Manifesto & Working Countries */}

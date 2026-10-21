@@ -6,7 +6,13 @@ import CompactLogo from './CompactLogo';
 /* NAVBAR COMPONENT                                                          */
 /* 4-column responsive header with live Cairo GMT ticking clock              */
 /* ========================================================================= */
-export default function Navbar({ isIntroStarted = false, activePage = 'home', onNavigate }) {
+export default function Navbar({ 
+  isIntroStarted = false, 
+  activePage = 'home', 
+  onNavigate,
+  isPinned = false,
+  isVisible = true 
+}) {
   /* ─── State: Cairo/Egypt Live GMT Clock ─── */
   const [egyptTime, setEgyptTime] = useState('');
 
@@ -48,10 +54,26 @@ export default function Navbar({ isIntroStarted = false, activePage = 'home', on
   /* ─── Render ─── */
   return (
     <motion.header 
-      className="fixed top-0 left-0 right-0 z-40 pt-[0.8333vw] pb-[0.8333vw] px-[1.6667vw] bg-black/60 backdrop-blur-md transition-all duration-300"
-      initial={isIntroStarted ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 }}
-      animate={isIntroStarted ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 }}
-      transition={{ duration: 0.8, ease: [0, 0.8, 0.2, 1] }}
+      className={`${
+        isPinned 
+          ? 'fixed top-0 left-0 right-0 z-40 bg-black/60 backdrop-blur-md' 
+          : 'w-full z-20'
+      } h-[2.5vw] px-[1.6667vw] flex items-center transition-colors duration-300`}
+      style={{ pointerEvents: isPinned && !isVisible ? 'none' : 'auto' }}
+      initial={
+        isPinned 
+          ? { y: '-100%', opacity: 0 } 
+          : (isIntroStarted ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 })
+      }
+      animate={
+        isPinned 
+          ? (isVisible ? { y: 0, opacity: 1 } : { y: '-100%', opacity: 0 }) 
+          : (isIntroStarted ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 })
+      }
+      transition={{ 
+        duration: isPinned ? 0.45 : 0.8, 
+        ease: isPinned ? [0.16, 1, 0.3, 1] : [0, 0.8, 0.2, 1] 
+      }}
     >
       <div className="w-full grid grid-cols-4 items-center">
         {/* Column 1: Compact Vector Logo */}
@@ -75,7 +97,7 @@ export default function Navbar({ isIntroStarted = false, activePage = 'home', on
               activePage === 'about' ? 'text-white underline underline-offset-4 decoration-white/40' : 'text-white/80 hover:text-white'
             }`}
           >
-            About
+            ABOUT
           </a>
           <a 
             href="#works" 
@@ -84,14 +106,14 @@ export default function Navbar({ isIntroStarted = false, activePage = 'home', on
               activePage === 'home' ? 'text-white' : 'text-white/80 hover:text-white'
             }`}
           >
-            Works
+            WORKS
           </a>
           <a 
             href="#services" 
             onClick={handleLinkClick('home', 'services')}
             className="text-[0.5556vw] font-semibold text-white/80 hover:text-white tracking-normal transition-opacity cursor-pointer"
           >
-            services
+            SERVICES
           </a>
         </nav>
 
@@ -100,8 +122,8 @@ export default function Navbar({ isIntroStarted = false, activePage = 'home', on
 
         {/* Column 4: Egypt Live GMT Time */}
         <div className="text-right">
-          <span className="text-[0.5556vw] font-semibold tracking-[-0.03em] text-white tabular-nums select-none">
-            {egyptTime || 'Egypt, 03:48:10 PM GMT'}
+          <span className="uppercase text-[0.5556vw] font-semibold tracking-[-0.03em] text-white tabular-nums select-none">
+            {egyptTime || 'EGYPT, 03:48:10 PM GMT'}
           </span>
         </div>
       </div>

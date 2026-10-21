@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import Navbar from './Navbar';
 import { logoPaths } from './logoPaths';
 import heroBackgroundVideo from '../assets/hero-background.mp4';
 
@@ -67,10 +68,8 @@ export default function Hero({ onNavigate, hasIntroPlayed = false, onIntroComple
         />
       </div>
 
-      {/* ─── 2. Top Header Geometry Spacer ─── */}
-      <div className="w-full pt-[0.8333vw] pb-[0.8333vw] px-[1.6667vw] opacity-0 pointer-events-none select-none" aria-hidden="true">
-        <div className="w-full h-[0.5556vw]"></div>
-      </div>
+      {/* ─── 2. Top Header Navigation (in-flow at top of page) ─── */}
+      <Navbar isIntroStarted={isIntroStarted} activePage="home" onNavigate={onNavigate} />
 
       {/* ─── 3. Flexible Center Spacer ─── */}
       <div className="flex-1"></div>

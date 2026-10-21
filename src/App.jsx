@@ -40,6 +40,7 @@ export default function App() {
   const [pendingSection, setPendingSection] = useState(null);
   const [hasIntroPlayed, setHasIntroPlayed] = useState(globalIntroHasPlayed);
   const [isIntroStarted, setIsIntroStarted] = useState(globalIntroHasPlayed);
+  const [isBoxRevealComplete, setIsBoxRevealComplete] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const isMutedRef = useRef(false);
   const lenisRef = useRef(null);
@@ -227,9 +228,11 @@ export default function App() {
       {/* Initial splash screen on page load */}
       <SplashScreen />
 
-      {/* Pinned Global Header Navigation */}
+      {/* Pinned Global Header Navigation (36px = 2.5vw proportional ratio) */}
       <Navbar 
-        isIntroStarted={hasIntroPlayed || isIntroStarted} 
+        isPinned={true}
+        isVisible={currentPage === 'about' || isBoxRevealComplete}
+        isIntroStarted={true}
         activePage={currentPage} 
         onNavigate={handleNavigate} 
       />
@@ -270,6 +273,7 @@ export default function App() {
               onNavigate={handleNavigate} 
               hasIntroPlayed={hasIntroPlayed}
               onIntroComplete={handleIntroComplete}
+              onBoxRevealComplete={setIsBoxRevealComplete}
             />
           ) : (
             <AboutPage onNavigate={handleNavigate} />

@@ -10,7 +10,12 @@ import Footer from './Footer';
 /* HOMEPAGE VIEW COMPONENT                                                   */
 /* Assembles the primary landing experience of NORQUE STUDIOS™               */
 /* ========================================================================= */
-export default function HomePage({ onNavigate, hasIntroPlayed = false, onIntroComplete }) {
+export default function HomePage({ 
+  onNavigate, 
+  hasIntroPlayed = false, 
+  onIntroComplete,
+  onBoxRevealComplete 
+}) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -25,7 +30,7 @@ export default function HomePage({ onNavigate, hasIntroPlayed = false, onIntroCo
       />
 
       {/* 2. Showcase: Pinned scroll-driven uncropped reveal animation */}
-      <Showcase />
+      <Showcase onRevealCompleteChange={onBoxRevealComplete} />
 
       {/* 3. Selected Works: 4-project 2-column showcase grid */}
       <SelectedWorks />

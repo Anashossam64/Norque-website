@@ -42,7 +42,11 @@
    - **News Header Uppercase**: Formatted heading to uppercase `"WHAT’S HAPPENING NOW"`, matching `references/Design 4.png`.
    - **Project Card Typography Spacing**: Increased spacing between the project title (white) and category (grey) from `pt-[0.2083vw]` to `pt-[0.5556vw]` across all project cards (Axis, Fusion Form, MMS, Studio Juzėnas), matching `references/Design 5.png`.
    - **Homepage News Grid**: Replaced rotary infinite carousel with a static 4-column responsive grid and disabled hover image scale zoom, matching `references/Design 3.png`.
-   - **Global Pinned Navigation Bar**: Pinned `Navbar` to the top across the entire site (`fixed top-0 left-0 right-0 z-40 bg-black/60 backdrop-blur-md`), mounted once at root in `App.jsx`, ensuring seamless persistence across page transitions without unmounting or flicker.
+   - **Global Pinned Navigation Bar & Scroll Transition (Phase 3)**:
+     - Standardized navbar height to exactly `36px` proportionally converted to `2.5vw` (`36 / 1440 * 100vw = 2.5vw`).
+     - Restored in-flow header inside `Hero.jsx` (`h-[2.5vw]`) and added a `2.5vw` top spacer in `AboutPage.jsx`, fully compensating for the space eaten out when the navbar became pinned and preventing any layout shifting.
+     - Implemented dynamic reveal-driven pinning: on the Home page, the navbar remains at the top of the page in `Hero`, naturally scrolls off during the initial scroll down through the 200vh Showcase GIF reveal, and only reappears and pins (`fixed top-0`, `y: 0`, `bg-black/60 backdrop-blur-md`) once the GIF box reveal is 100% complete (`p >= 0.99`).
+     - On secondary pages (`AboutPage`), the navbar remains pinned at all times.
 
 6. **GitHub Repository & GitHub Pages Deployment**:
    - Configured Vite `base: './'` and dynamic asset interpolation (`import.meta.env.BASE_URL`) so assets load without 404s on subpaths (`username.github.io/repo/`) or custom domains.
