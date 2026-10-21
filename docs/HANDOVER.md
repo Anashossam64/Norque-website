@@ -10,7 +10,7 @@
 | Property | Value |
 | :--- | :--- |
 | **Project Name** | Norque Studios Website |
-| **Current Milestone** | `Version 0.2v` (Day 2 Milestone complete, Day 3 Optimization complete) |
+| **Current Milestone** | `Version 0.2.2` (Day 3 Complete: Design Alignment, Universal Margins, Masked Word Stagger, Opacity Transitions) |
 | **Tech Stack** | React 18, Vite 6, Tailwind CSS 3, Framer Motion 14, Lenis Smooth Scroll, Lucide Icons |
 | **Design Reference** | 1:1 Pixel-perfect recreation of Figma designs (`1440px` baseline grid) |
 | **Local Dev Server** | `http://localhost:3000/` (`npm run dev` or `npm.cmd run dev` on Windows) |
@@ -27,10 +27,10 @@ norque-studios/
 │   ├── ARCHITECTURE.md               # Technical systems, diagrams & data flows
 │   ├── DAY_1_LOG.md                  # Day 1 sprint summary (Genesis & Homepage)
 │   ├── DAY_2_LOG.md                  # Day 2 sprint summary (About Page, Carousels, Audio)
-│   └── DAY_3_LOG.md                  # Day 3 sprint summary (Optimization, Cleanup, Git Setup)
+│   └── DAY_3_LOG.md                  # Day 3 sprint summary (Optimization, Cleanup, Git Setup, Polish)
 ├── public/                           # Unbundled static assets
 │   ├── audio/                        # Sound engine audio files
-│   │   ├── SFX Norque.mp3            # Atmospheric background ambient track (looping/continuous)
+│   │   ├── SFX Norque.mp3            # Atmospheric background ambient track (continuous)
 │   │   └── SFX Norque_2.mp3          # UI click interactive feedback track
 │   └── images/
 │       └── about/                    # High-resolution raster images for About page
@@ -72,15 +72,16 @@ norque-studios/
 │   │   ├── InteractiveInfiniteCarousel.jsx # Multi-buffer physics drag/swipe carousel
 │   │   ├── logoPaths.js              # Bezier path vectors for hero logo
 │   │   ├── MainLogo.jsx              # Vector main brand mark component
+│   │   ├── MaskedWordStagger.jsx     # Universal overflow-hidden word stagger typography component
 │   │   ├── MuteButton.jsx            # Optical Liquid Glass refraction audio toggle
-│   │   ├── Navbar.jsx                # Pinned global header with live Cairo GMT clock
+│   │   ├── Navbar.jsx                # Pinned global header with live Cairo GMT clock & word hover stagger
 │   │   ├── NewsSection.jsx           # Homepage "WHAT’S HAPPENING NOW" static 4-column grid
 │   │   ├── Philosophy.jsx            # Typographic intention statement
 │   │   ├── SelectedWorks.jsx         # 4-project 2-column showcase grid
 │   │   ├── Showcase.jsx              # 200vh pinned uncropped reveal container
 │   │   ├── splashLogoPaths.js        # Vector paths for splash screen
 │   │   └── SplashScreen.jsx          # 2.0s initial load brand introduction
-│   ├── App.jsx                       # Root view, router, audio manager & transitions
+│   ├── App.jsx                       # Root view, router, audio manager & in-place transitions
 │   ├── index.css                     # Font definitions, Lenis rules & scrollbar hides
 │   └── main.jsx                      # React 18 DOM mount point
 ├── index.html                        # HTML root template
@@ -99,11 +100,10 @@ norque-studios/
 1. **Grid & Viewport Math**:
    - The design is anchored to a standard **1440px desktop canvas**.
    - Proportional scaling is achieved using exact `vw` values: `(pixel_value / 1440) * 100vw`.
-   - Examples:
-     - Outer Margins: `24px` = `1.6667vw` (`px-[1.6667vw]`)
-     - Standard Grid Gutters: `12px` = `0.8333vw` (`gap-[0.8333vw]`)
-     - Headline text sizes: `46px` = `3.1944vw`
-     - Body text sizes: `10px` = `0.6944vw`
+   - **Universal Horizontal Margins**: Strictly **`12px` = `0.8333vw` (`px-[0.8333vw]`)** applied universally across all pages (Home & About) and sections. Restrictive fixed-width containers (`max-w-[1416px]`) are prohibited so layouts expand edge-to-edge flush with the universal margin.
+   - Standard Grid Gutters: `12px` = `0.8333vw` (`gap-[0.8333vw]`).
+   - Headline text sizes: `46px` = `3.1944vw`.
+   - Body text sizes: `10px` = `0.6944vw`.
 2. **Typography System**:
    - Font Family: **Beausite Classic** (weights 100 through 900 loaded in `@font-face`).
    - Standard Tracking: **`-0.03em` (`-3%`)** across all headings and captions.
@@ -118,35 +118,34 @@ norque-studios/
 
 ## 🔄 Core Technical Systems
 
-### 1. Multi-Page Routing & Transitions (`App.jsx`)
+### 1. Multi-Page Routing & In-Place Opacity Transitions (`App.jsx`)
 - State-driven single-page router: `currentPage` (`'home'` | `'about'`).
-- **Cinematic 1-Second Page Transition**:
-  - Exit: Smooth deceleration zoom-out to black (`scale: 0.94`, `opacity: 0`, `duration: 0.45s`).
-  - Swap: Content mounts while scroll position is instantly reset to `top: 0` via Lenis.
-  - Enter: Smooth deceleration zoom-in from black (`scale: 1.0`, `opacity: 1`, `duration: 0.5s`).
+- **Scale-Free Opacity Crossfade (Scale = 1.0)**:
+  - Scale remains strictly 1.0 (no scale or zoom distortion).
+  - Exit: Current page fades out in-place (`opacity: 1 -> 0`, `duration: 0.35s`, `ease: [0.4, 0, 0.2, 1]`).
+  - Transition: Navbar opacity fades out synchronously with the page (`opacity: 0`).
+  - Arrival: In `onExitComplete`, instant scroll reset occurs (`window.scrollTo(0, 0)` and `lenis.scrollTo(0, { immediate: true })`), followed by the navigated page and navbar fading in (`opacity: 0 -> 1`, `duration: 0.35s`).
+  - Result: Destination pages always start cleanly from the hero section, while the user experiences zero upward snapping on exit.
 - Deep Navigation: Clicking "Works" from the About page switches to Home and smoothly scrolls down to `#works` via Lenis.
 
-### 2. Dual-Layer Sound System (`App.jsx`, `MuteButton.jsx`)
-- **Layer 1: Ambient Background (`SFX Norque.mp3`)**:
-  - Starts playing on initial user interaction (or immediately if unblocked).
-  - Plays continuously and persists seamlessly across page transitions.
-  - Synced to the global `isMuted` state.
-- **Layer 2: Interactive UI SFX (`SFX Norque_2.mp3`)**:
-  - Triggers on click of any interactive element (`button`, `a`, `.cursor-pointer`).
-  - **Critical Rule**: Completely suppressed when the user is dragging or scrolling carousels via `window.__norqueCarouselDragged`.
-- **Mute Button**:
-  - Features real-time optical "Liquid Glass" refraction via an SVG displacement filter generated dynamically on an HTML5 canvas normal map.
+### 2. Universal Masked Word Stagger (`MaskedWordStagger.jsx`)
+- Splits text into overflow-masked word tokens with descender preservation (`pb-[0.06em]`).
+- Supports compound elements (interactive links and line breaks).
+- Motion parameters are universal across the entire site:
+  - Duration: `0.65s`
+  - Ease: `[0, 0.8, 0.2, 1]`
+  - Stagger: `0.018s` between words
+  - Trigger: Automatically triggers when section enters viewport (`whileInView` with `viewport: { once: true, amount: 0.15 }`).
 
-### 3. Interactive Infinite Carousel (`InteractiveInfiniteCarousel.jsx`)
-- **Geometry**: 5-track buffer system (Left Buffer, Center Anchor, Right Buffer 1, Right Buffer 2, Right Buffer 3).
-- **Interactions**:
-  - Auto-play with smooth continuous scroll.
-  - Direct click & drag with momentum and physics inertia decay upon release.
-  - Horizontal trackpad swipe & wheel support.
-- **Click vs. Drag Separation**:
-  - If pointer moves >4px, it enters drag mode.
-  - Trailing click events on release are captured in the capture phase and swallowed (`stopImmediatePropagation`).
-  - Cards are clickable only on intentional taps without drag.
+### 3. Pinned Navbar & Word-Level Hover Stagger (`Navbar.jsx`)
+- **Proportional Height**: Exactly `36px` proportionally converted to `2.5vw` (`h-[2.5vw]`).
+- **Reveal-Driven Pinning**: On Home page, header scrolls off naturally with Hero and only reappears / pins with a 0.5s delayed entrance (`[0, 0.8, 0.2, 1]`) once the Showcase GIF box reveal reaches 100%. On About page, it is pinned continuously.
+- **Word-Level Hover Stagger**: Nav buttons animate by word (upward roll out of masked boundary with duplicate replacement rising from below) matching `references/Hover Stagger reference.mp4` (`duration: 0.38s`, `ease: [0, 0.8, 0.2, 1]`). Nav buttons remain permanently in default state with no sticky selection.
+
+### 4. Dual-Layer Sound System (`App.jsx`, `MuteButton.jsx`)
+- **Layer 1: Ambient Background (`SFX Norque.mp3`)**: Plays continuously and persists seamlessly across page transitions.
+- **Layer 2: Interactive UI SFX (`SFX Norque_2.mp3`)**: Triggers on click of any interactive element. Completely suppressed during carousel drag via `window.__norqueCarouselDragged`.
+- **Mute Button**: Real-time optical "Liquid Glass" refraction via canvas normal map displacement filter, finished with a satin frosted glass tint.
 
 ---
 

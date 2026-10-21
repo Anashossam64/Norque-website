@@ -1,7 +1,7 @@
 # Day 3 Development Log — Norque Studios Website
 
 **Date:** October 21, 2026  
-**Objective:** Project optimization, repository decluttering, code readability pass, documentation suite, and GitHub repository preparation.
+**Objective:** Project optimization, repository decluttering, code readability pass, documentation suite, GitHub repository preparation, design alignment, and universal typography/motion polish.
 
 ---
 
@@ -31,7 +31,7 @@
 
 4. **Handover Documentation & UI Refinements**:
    - Reverted original 3-paragraph studio manifesto and caption row under the pinned Showcase reveal.
-   - Refined Showcase uncropped reveal geometry to align pixel-perfect with universal `1.6667vw` margins upon 100% expansion.
+   - Refined Showcase uncropped reveal geometry to align pixel-perfect with universal margins upon 100% expansion.
    - Enhanced Mute Button with a darker satin frosted glass optical shader while preserving real-time liquid glass refraction and rim specular reflections.
    - Maintained full suite in `docs/` (`HANDOVER.md`, `ARCHITECTURE.md`, `DAY_1_LOG.md`, `DAY_2_LOG.md`, `DAY_3_LOG.md`).
 
@@ -53,3 +53,26 @@
    - Created official automated deployment workflow `.github/workflows/deploy.yml` using GitHub Actions.
    - Identified and documented the custom domain formatting fix (`norque` is not a valid FQDN; clear the custom domain field in GitHub Pages settings unless using a verified top-level domain).
    - Repository successfully linked to `https://github.com/Anashossam64/Norque-website.git`.
+
+7. **Universal Margins, Word Stagger Hover, Opacity Transitions & Typographic Reveal (Phase 4)**:
+   - **Universal 12px (0.8333vw) Margin Enforcement**:
+     - Standardized universal left/right margins to strictly `12px` proportionally converted to `0.8333vw` (`px-[0.8333vw]`).
+     - Removed restrictive `max-w-[1416px] mx-auto` containers from `AboutHero.jsx`, `AboutTeam.jsx`, and `AboutNews.jsx`, guaranteeing that both Home and About pages maintain edge-to-edge alignment with zero margin deviation.
+   - **Word-Level Staggered Nav Button Hover**:
+     - Updated `StaggeredNavButton` in `Navbar.jsx` to split and roll text **by word** (not letter-by-letter), exactly matching `references/Hover Stagger reference.mp4` (`0.38s` duration, cubic-bezier `[0, 0.8, 0.2, 1]`).
+     - Nav buttons remain permanently in their clean default state, changing only into hover state upon cursor entry.
+   - **Opacity-Only Page Crossfade (Scale = 1.0)**:
+     - Eliminated zoom/scale animations across page transitions. Pages crossfade purely via opacity (`opacity: 1 -> 0` on exit, `opacity: 0 -> 1` on enter, duration `0.35s`, ease `[0.4, 0, 0.2, 1]`).
+     - Navbar opacity is synchronized: it smoothly fades out during page exit and fades back in when the navigated page mounts.
+   - **In-Place Exit & Hero Arrival**:
+     - Removed immediate scroll snapping from `handleNavigate` in `App.jsx`, ensuring that when navigating while scrolled down, the current page fades out **in-place** without jumping back to the top before fading.
+     - Deferred instant scroll resets (`window.scrollTo(0, 0)` and `lenis.scrollTo(0, { immediate: true })`) to Framer Motion's `onExitComplete` hook, ensuring that incoming pages always render cleanly from their hero section.
+   - **Universal Masked Word Stagger Component (`MaskedWordStagger.jsx`)**:
+     - Created a reusable typography component that splits text into overflow-masked word tokens with descender preservation (`pb-[0.06em]`) and compound child support (embedded links and line breaks).
+     - Applied universally across 5 key studio statements:
+       1. Brand Statement / Manifesto in `Showcase.jsx` (including interactive links).
+       2. Philosophy Section in `Philosophy.jsx`.
+       3. Top inquiry callout in `Footer.jsx`.
+       4. Manifesto statement in `AboutHero.jsx`.
+       5. Multidisciplinary Network Statement in `AboutTeam.jsx`.
+     - Standardized universal motion parameters: `duration: 0.65s`, `ease: [0, 0.8, 0.2, 1]`, `staggerChildren: 0.018s`, triggered automatically on viewport entrance (`whileInView` with `amount: 0.15`).
