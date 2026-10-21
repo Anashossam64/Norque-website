@@ -1,4 +1,5 @@
 import React from 'react';
+import MaskedWordStagger from '../MaskedWordStagger';
 
 /* ========================================================================= */
 /* ABOUT TEAM SECTION                                                        */
@@ -80,10 +81,10 @@ export default function AboutTeam() {
         </div>
 
         {/* ─── 2. Multidisciplinary Network Statement ─── */}
-        <div className="max-w-[1056px] mb-[4.1667vw]">
-          <p className="text-[18px] sm:text-[1.5278vw] font-bold text-white tracking-[-0.03em] leading-[1.2]">
+        <div className="max-w-[73.3333vw] mb-[4.1667vw]">
+          <MaskedWordStagger className="text-[18px] sm:text-[1.5278vw] font-bold text-white tracking-[-0.03em] leading-[1.2]">
             Behind NORQUE is a growing network of designers, developers, creatives and specialists who bring their own way of thinking to the table. Different backgrounds, different disciplines, one shared obsession with making things that feel right.
-          </p>
+          </MaskedWordStagger>
         </div>
 
         {/* ─── 3. Core Team Grid (4 Columns) ─── */}

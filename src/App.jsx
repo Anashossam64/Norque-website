@@ -38,6 +38,7 @@ export default function App() {
   /* ─── State Management ─── */
   const [currentPage, setCurrentPage] = useState('home');
   const [pendingSection, setPendingSection] = useState(null);
+  const [isPageTransitioning, setIsPageTransitioning] = useState(false);
   const [hasIntroPlayed, setHasIntroPlayed] = useState(globalIntroHasPlayed);
   const [isIntroStarted, setIsIntroStarted] = useState(globalIntroHasPlayed);
   const [isBoxRevealComplete, setIsBoxRevealComplete] = useState(false);
@@ -98,12 +99,8 @@ export default function App() {
       return;
     }
 
-    // When switching pages, immediately reset scroll to top
-    window.scrollTo(0, 0);
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true });
-    }
-
+    // When switching pages, trigger seamless in-place fade out without scroll jumps
+    setIsPageTransitioning(true);
     setPendingSection(sectionId);
     setCurrentPage(targetPage);
   };
@@ -234,10 +231,11 @@ export default function App() {
         isVisible={currentPage === 'about' || isBoxRevealComplete}
         isIntroStarted={true}
         activePage={currentPage} 
-        onNavigate={handleNavigate} 
+        onNavigate={handleNavigate}
+        isPageTransitioning={isPageTransitioning}
       />
 
-      {/* Cinematic 1-second Page Transition: Zoom-out & Fade to Black -> Swap -> Fade in & Zoom-in */}
+      {/* Seamless Page Transition: Opacity-only crossfade (no scale distortion) */}
       <AnimatePresence 
         mode="wait"
         onExitComplete={() => {
@@ -245,28 +243,27 @@ export default function App() {
           if (lenisRef.current) {
             lenisRef.current.scrollTo(0, { immediate: true });
           }
+          setIsPageTransitioning(false);
         }}
       >
         <motion.div
           key={currentPage}
-          initial={{ opacity: 0, scale: 0.94 }}
+          initial={{ opacity: 0 }}
           animate={{ 
             opacity: 1, 
-            scale: 1,
             transition: {
-              duration: 0.5,
-              ease: [0.16, 1, 0.3, 1] // Deceleration zoom-in
+              duration: 0.35,
+              ease: [0.4, 0, 0.2, 1]
             }
           }}
           exit={{ 
             opacity: 0, 
-            scale: 0.94,
             transition: {
-              duration: 0.45,
-              ease: [0.4, 0, 0.2, 1] // Acceleration zoom-out to black
+              duration: 0.35,
+              ease: [0.4, 0, 0.2, 1]
             }
           }}
-          className="w-full origin-center"
+          className="w-full"
         >
           {currentPage === 'home' ? (
             <HomePage 

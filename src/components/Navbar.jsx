@@ -4,11 +4,12 @@ import CompactLogo from './CompactLogo';
 
 /* ========================================================================= */
 /* STAGGERED MASKED NAV LINK BUTTON COMPONENT                                */
-/* Letters stagger upward while duplicated masked letters rise from below    */
+/* Words stagger upward while duplicated masked words rise from below        */
+/* Reference: References/Hover Stagger reference.mp4                         */
 /* ========================================================================= */
 function StaggeredNavButton({ label, onClick }) {
   const [isHovered, setIsHovered] = useState(false);
-  const chars = label.split('');
+  const words = label.split(' ');
 
   return (
     <a
@@ -19,38 +20,38 @@ function StaggeredNavButton({ label, onClick }) {
       className="relative inline-flex items-center text-[0.5556vw] font-semibold tracking-normal text-white cursor-pointer select-none py-[0.1vw]"
     >
       <span className="inline-flex overflow-hidden leading-tight">
-        {chars.map((char, index) => (
+        {words.map((word, index) => (
           <span 
             key={index} 
-            className="relative inline-block overflow-hidden"
+            className="relative inline-block overflow-hidden mr-[0.25em] last:mr-0"
           >
-            {/* Primary Character: Staggers upward out of view on hover */}
+            {/* Primary Word: Rolls upward out of masked boundary on hover */}
             <motion.span
               className="inline-block"
               initial={false}
               animate={{ y: isHovered ? '-100%' : '0%' }}
               transition={{
-                duration: 0.35,
+                duration: 0.38,
                 ease: [0, 0.8, 0.2, 1],
-                delay: isHovered ? index * 0.025 : (chars.length - 1 - index) * 0.015,
+                delay: isHovered ? index * 0.04 : (words.length - 1 - index) * 0.04,
               }}
             >
-              {char === ' ' ? '\u00A0' : char}
+              {word}
             </motion.span>
 
-            {/* Masked Duplicate Character: Staggers in from bottom on hover */}
+            {/* Masked Duplicate Word: Rolls in from bottom into view on hover */}
             <motion.span
               className="absolute top-0 left-0 inline-block text-white"
               initial={false}
               animate={{ y: isHovered ? '0%' : '100%' }}
               transition={{
-                duration: 0.35,
+                duration: 0.38,
                 ease: [0, 0.8, 0.2, 1],
-                delay: isHovered ? index * 0.025 : (chars.length - 1 - index) * 0.015,
+                delay: isHovered ? index * 0.04 : (words.length - 1 - index) * 0.04,
               }}
               aria-hidden="true"
             >
-              {char === ' ' ? '\u00A0' : char}
+              {word}
             </motion.span>
           </span>
         ))}
@@ -68,7 +69,8 @@ export default function Navbar({
   activePage = 'home', 
   onNavigate,
   isPinned = false,
-  isVisible = true 
+  isVisible = true,
+  isPageTransitioning = false
 }) {
   /* ─── State: Cairo/Egypt Live GMT Clock ─── */
   const [egyptTime, setEgyptTime] = useState('');
@@ -108,25 +110,21 @@ export default function Navbar({
     return () => clearInterval(interval);
   }, []);
 
-  /* ─── Pinned Header Variants with 0.5s Delayed Entrance ─── */
-  const pinnedVariants = {
-    hidden: {
-      y: '-100%',
-      opacity: 0,
-      transition: {
-        duration: 0.35,
-        ease: [0, 0.8, 0.2, 1],
-        delay: 0,
-      },
+  /* ─── Transition & Entrance Configurations ─── */
+  const navOpacity = isPageTransitioning ? 0 : (isVisible ? 1 : 0);
+  const navY = isPinned ? (isVisible ? 0 : '-100%') : (isIntroStarted ? 0 : -50);
+  const isHomeFirstReveal = !isPageTransitioning && activePage === 'home' && isVisible;
+
+  const transitionConfig = {
+    y: {
+      duration: isHomeFirstReveal ? 0.8 : 0.35,
+      ease: [0, 0.8, 0.2, 1],
+      delay: isHomeFirstReveal ? 0.5 : 0,
     },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: [0, 0.8, 0.2, 1],
-        delay: activePage === 'home' ? 0.5 : 0,
-      },
+    opacity: {
+      duration: isHomeFirstReveal ? 0.8 : 0.35,
+      ease: [0, 0.8, 0.2, 1],
+      delay: isHomeFirstReveal ? 0.5 : 0,
     },
   };
 
@@ -138,23 +136,17 @@ export default function Navbar({
           ? 'fixed top-0 left-0 right-0 z-40 bg-black/60 backdrop-blur-md' 
           : 'w-full z-20'
       } h-[2.5vw] px-[0.8333vw] flex items-center transition-colors duration-300`}
-      style={{ pointerEvents: isPinned && !isVisible ? 'none' : 'auto' }}
-      variants={isPinned ? pinnedVariants : undefined}
+      style={{ pointerEvents: isPinned && (!isVisible || isPageTransitioning) ? 'none' : 'auto' }}
       initial={
         isPinned 
-          ? 'hidden' 
-          : (isIntroStarted ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 })
+          ? { y: isVisible ? 0 : '-100%', opacity: 0 } 
+          : { y: isIntroStarted ? 0 : -50, opacity: isIntroStarted ? 1 : 0 }
       }
-      animate={
-        isPinned 
-          ? (isVisible ? 'visible' : 'hidden') 
-          : (isIntroStarted ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 })
-      }
-      transition={
-        !isPinned 
-          ? { duration: 0.8, ease: [0, 0.8, 0.2, 1] } 
-          : undefined
-      }
+      animate={{
+        y: navY,
+        opacity: navOpacity,
+      }}
+      transition={transitionConfig}
     >
       <div className="w-full grid grid-cols-4 items-center">
         {/* Column 1: Compact Vector Logo */}

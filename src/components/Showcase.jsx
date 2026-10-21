@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import recentWorksGif from '../assets/recent-works.gif';
+import MaskedWordStagger from './MaskedWordStagger';
 
 /* ========================================================================= */
 /* SHOWCASE SECTION COMPONENT                                                */
@@ -118,13 +119,13 @@ export default function Showcase({ onRevealCompleteChange }) {
       <div className="w-full px-[0.8333vw]">
         <div className="pt-[4.1667vw] pb-[9.0278vw]">
           <div className="max-w-[73.3333vw] space-y-[1.5278vw]">
-            <p className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
+            <MaskedWordStagger className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
               NORQUE STUDIOS™ — A creative studio for brands that want to build something real. Based between ideas, design and digital, we work across branding, creative direction, UI/UX and web development.
-            </p>
-            <p className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
+            </MaskedWordStagger>
+            <MaskedWordStagger className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
               We collaborate with ambitious brands, businesses and creative partners to shape identities, digital experiences and visual systems that feel considered, distinctive and built to last. From the first idea to the final detail, we bring strategy, design and development together under one roof.
-            </p>
-            <p className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
+            </MaskedWordStagger>
+            <MaskedWordStagger className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
               Feel free to explore our{" "}
               <a href="#works" className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer">
                 Works
@@ -145,7 +146,7 @@ export default function Showcase({ onRevealCompleteChange }) {
               >
                 hello@norquestudios.com
               </a>
-            </p>
+            </MaskedWordStagger>
           </div>
         </div>
       </div>

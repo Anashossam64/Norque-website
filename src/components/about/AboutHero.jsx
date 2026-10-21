@@ -1,4 +1,5 @@
 import React from 'react';
+import MaskedWordStagger from '../MaskedWordStagger';
 
 /* ========================================================================= */
 /* ABOUT HERO SECTION                                                        */
@@ -15,7 +16,7 @@ const COUNTRIES = [
 
 export default function AboutHero() {
   return (
-    <section className="w-full pt-[4.1667vw] pb-[6.25vw] px-[0.8333vw]">
+    <section className="w-full pt-[1vw] pb-[6.25vw] px-[0.8333vw]">
       <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-y-12 lg:gap-x-[0.8333vw]">
         {/* ─── Column 1 & 2: Manifesto & Aesthetics Media ─── */}
         <div className="lg:col-span-2 flex flex-col justify-between">
@@ -23,9 +24,9 @@ export default function AboutHero() {
             <span className="block text-[11px] sm:text-[0.6944vw] font-semibold text-[#747474] tracking-[-0.03em] uppercase mb-[1.3889vw]">
               [ ABOUT ]
             </span>
-            <p className="text-[18px] sm:text-[1.5278vw] font-bold text-white tracking-[-0.03em] leading-[1.2] selection:bg-white selection:text-black">
+            <MaskedWordStagger className="text-[18px] sm:text-[1.5278vw] font-bold text-white tracking-[-0.03em] leading-[1.2] selection:bg-white selection:text-black">
               — An independent creative studio built around design, digital experiences and the ideas that connect them. We work with brands, businesses and people who care about how things look, feel and exist in the real world. From brand identities and creative direction to UI/UX, web design and development, we bring different disciplines together to create work that is clear, intentional and built with purpose. No fixed formulas, no unnecessary layers — just the right thinking, design and execution for each project.
-            </p>
+            </MaskedWordStagger>
           </div>
 
           <div className="mt-8 sm:mt-[9.9306vw]">

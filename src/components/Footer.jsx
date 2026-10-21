@@ -1,5 +1,6 @@
 import React from 'react';
 import MainLogo from './MainLogo';
+import MaskedWordStagger from './MaskedWordStagger';
 
 /* ========================================================================= */
 /* UNIVERSAL FOOTER COMPONENT                                                */
@@ -13,7 +14,7 @@ export default function Footer() {
         {/* ─── 1. Top Callout Section ─── */}
         <div className="border-t border-[#363636] pt-[1.6667vw]">
           <div className="max-w-[23.9583vw]">
-            <p className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
+            <MaskedWordStagger className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
               Got a project on mind?<br />
               Let’s make it alive!<br />
               <a 
@@ -22,7 +23,7 @@ export default function Footer() {
               >
                 hello@norquestudios.com
               </a>
-            </p>
+            </MaskedWordStagger>
           </div>
         </div>
 
