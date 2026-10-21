@@ -4,26 +4,28 @@ import React from 'react';
 /* ABOUT TEAM SECTION                                                        */
 /* "PPL BEHIND NRQ™" - Founders showcase and core multidisciplinary team     */
 /* ========================================================================= */
+const base = import.meta.env.BASE_URL || './';
+
 const TEAM = [
   {
     name: 'Alaa Kabil',
     role: 'Graphic Designer',
-    image: '/images/about/team-alaa-kabil.png',
+    image: `${base}images/about/team-alaa-kabil.png`,
   },
   {
     name: 'Okaby',
     role: 'Art Director / Photographer',
-    image: '/images/about/team-okaby.jpg',
+    image: `${base}images/about/team-okaby.jpg`,
   },
   {
     name: 'Anas El Sharief',
     role: 'Product Owner & Client Management',
-    image: '/images/about/team-anas-el-sharief.png',
+    image: `${base}images/about/team-anas-el-sharief.png`,
   },
   {
     name: 'Marwan Yasser',
     role: 'Video Editor',
-    image: '/images/about/team-marwan-yasser.png',
+    image: `${base}images/about/team-marwan-yasser.png`,
   },
 ];
 
@@ -41,7 +43,7 @@ export default function AboutTeam() {
           {/* Founder 1: Mostafa Yasser */}
           <div className="relative w-full aspect-[702/628] rounded-[4px] overflow-hidden group">
             <img 
-              src="/images/about/founder-mostafa-yasser.png" 
+              src={`${base}images/about/founder-mostafa-yasser.png`} 
               alt="Mostafa Yasser - Co-Founder" 
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               loading="lazy"
@@ -60,7 +62,7 @@ export default function AboutTeam() {
           {/* Founder 2: Hossam Hassan */}
           <div className="relative w-full aspect-[702/628] rounded-[4px] overflow-hidden group">
             <img 
-              src="/images/about/founder-hossam-hassan.png" 
+              src={`${base}images/about/founder-hossam-hassan.png`} 
               alt="Hossam Hassan - Co-Founder" 
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               loading="lazy"

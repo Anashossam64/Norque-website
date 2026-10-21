@@ -30,7 +30,7 @@ export default function AboutHero() {
 
           <div className="mt-8 sm:mt-[9.9306vw]">
             <img 
-              src="/images/about/about-intro-image.png" 
+              src={`${import.meta.env.BASE_URL}images/about/about-intro-image.png`} 
               alt="Norque visual aesthetics" 
               className="w-[180px] h-[242px] sm:w-[15.0069vw] sm:h-[20.2083vw] object-cover rounded-[4px] grayscale hover:grayscale-0 transition-all duration-500"
               loading="eager"

@@ -5,27 +5,29 @@ import InteractiveInfiniteCarousel from '../InteractiveInfiniteCarousel';
 /* ABOUT NEWS SECTION                                                        */
 /* "What happened lately" interactive infinite news carousel                 */
 /* ========================================================================= */
+const base = import.meta.env.BASE_URL || './';
+
 const NEWS_ITEMS = [
   {
-    image: '/images/about/news-lithuania-chapter-1.png',
+    image: `${base}images/about/news-lithuania-chapter-1.png`,
     aspect: 'aspect-[345/438.2]',
     title: 'Next chapter of an architecture studio in Lithuania',
     description: 'Over past month, we have been working on a Lithuanian architecture studio owned by the great architect Justas Juzenas. We are currently building the hierarchy, layouts and the mood of the studio’s website.',
   },
   {
-    image: '/images/about/news-lithuania-chapter-2.png',
+    image: `${base}images/about/news-lithuania-chapter-2.png`,
     aspect: 'aspect-[345/540]',
     title: 'Next chapter of an architecture studio in Lithuania',
     description: 'Over past month, we have been working on a Lithuanian architecture studio owned by the great architect Justas Juzenas. We are currently building the hierarchy, layouts and the mood of the studio’s website.',
   },
   {
-    image: '/images/about/news-saudi-arabia.png',
+    image: `${base}images/about/news-saudi-arabia.png`,
     aspect: 'aspect-[345/423.9]',
     title: 'Catch us in Saudi Arabia',
     description: 'Over past month, we have been working on a Lithuanian architecture studio owned by the great architect Justas Juzenas. We are currently building the hierarchy, layouts and the mood of the studio’s website.',
   },
   {
-    image: '/images/about/news-lithuania-identity.png',
+    image: `${base}images/about/news-lithuania-identity.png`,
     aspect: 'aspect-[345/540]',
     title: 'Developing a Lithuanian architecture studio’s visual Identity',
     description: 'Over past month, we have been working on a Lithuanian architecture studio owned by the great architect Justas Juzenas. We are currently building the hierarchy, layouts and the mood of the studio’s website.',

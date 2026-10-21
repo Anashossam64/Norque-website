@@ -17,7 +17,8 @@ let globalIntroHasPlayed = false;
 function playIntroAudio(isMuted = false) {
   if (introAudioHasStarted) return;
   if (!introAudioInstance) {
-    introAudioInstance = new Audio(encodeURI('/audio/SFX Norque.mp3'));
+    const base = import.meta.env.BASE_URL || './';
+    introAudioInstance = new Audio(encodeURI(`${base}audio/SFX Norque.mp3`));
     introAudioInstance.loop = false;
     introAudioInstance.volume = 0.25; // Subtle and atmospheric, but clearly listenable
   }
@@ -175,7 +176,8 @@ export default function App() {
 
   // Click SFX: Play "SFX Norque_2.mp3" strictly on interactive UI clicks
   useEffect(() => {
-    const clickAudio = new Audio(encodeURI('/audio/SFX Norque_2.mp3'));
+    const base = import.meta.env.BASE_URL || './';
+    const clickAudio = new Audio(encodeURI(`${base}audio/SFX Norque_2.mp3`));
     clickAudio.loop = false;
 
     const handleClick = (e) => {
