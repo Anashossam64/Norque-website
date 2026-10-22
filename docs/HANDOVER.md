@@ -10,7 +10,7 @@
 | Property | Value |
 | :--- | :--- |
 | **Project Name** | Norque Studios Website |
-| **Current Milestone** | `Version 0.2.2` (Day 3 Complete: Design Alignment, Universal Margins, Masked Word Stagger, Opacity Transitions) |
+| **Current Milestone** | `Version 0.3.0` (Day 4 Complete: 100% Home & About Pages, Line-by-Line Stagger, Isolated Scroll Motion Blur) |
 | **Tech Stack** | React 18, Vite 6, Tailwind CSS 3, Framer Motion 14, Lenis Smooth Scroll, Lucide Icons |
 | **Design Reference** | 1:1 Pixel-perfect recreation of Figma designs (`1440px` baseline grid) |
 | **Local Dev Server** | `http://localhost:3000/` (`npm run dev` or `npm.cmd run dev` on Windows) |
@@ -27,7 +27,8 @@ norque-studios/
 │   ├── ARCHITECTURE.md               # Technical systems, diagrams & data flows
 │   ├── DAY_1_LOG.md                  # Day 1 sprint summary (Genesis & Homepage)
 │   ├── DAY_2_LOG.md                  # Day 2 sprint summary (About Page, Carousels, Audio)
-│   └── DAY_3_LOG.md                  # Day 3 sprint summary (Optimization, Cleanup, Git Setup, Polish)
+│   ├── DAY_3_LOG.md                  # Day 3 sprint summary (Optimization, Cleanup, Git Setup, Polish)
+│   └── DAY_4_LOG.md                  # Day 4 sprint summary (Line-by-Line Stagger, Motion Blur, 100% Home & About)
 ├── public/                           # Unbundled static assets
 │   ├── audio/                        # Sound engine audio files
 │   │   ├── SFX Norque.mp3            # Atmospheric background ambient track (continuous)

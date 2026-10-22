@@ -112,7 +112,7 @@ export default function App() {
     }
     window.scrollTo(0, 0);
 
-    // Initialize Lenis Smooth Scroll
+    // Initialize Lenis Smooth Scroll with velocity-driven vertical motion blur
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -122,14 +122,47 @@ export default function App() {
     lenis.scrollTo(0, { immediate: true });
     lenisRef.current = lenis;
 
+    let targetBlur = 0;
+    let currentBlur = 0;
+    let animationFrameId = null;
+
+    lenis.on('scroll', ({ velocity }) => {
+      // Map scroll velocity to an intensified vertical blur (clamped up to 3.8px)
+      const absV = Math.abs(velocity || 0);
+      targetBlur = Math.min(absV * 0.22, 3.8);
+    });
+
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+
+      // Smooth lerp decay for organic, filmic shutter motion blur
+      currentBlur += (targetBlur - currentBlur) * 0.28;
+      targetBlur *= 0.92;
+
+      const feBlur = document.getElementById('scroll-motion-blur-fe');
+
+      if (feBlur) {
+        if (currentBlur > 0.08) {
+          feBlur.setAttribute('stdDeviation', `0 ${currentBlur.toFixed(2)}`);
+          if (!document.body.classList.contains('is-scrolling')) {
+            document.body.classList.add('is-scrolling');
+          }
+        } else if (document.body.classList.contains('is-scrolling')) {
+          document.body.classList.remove('is-scrolling');
+          feBlur.setAttribute('stdDeviation', '0 0');
+          currentBlur = 0;
+          targetBlur = 0;
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    animationFrameId = requestAnimationFrame(raf);
 
     return () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      document.body.classList.remove('is-scrolling');
       lenis.destroy();
       lenisRef.current = null;
     };
@@ -235,48 +268,63 @@ export default function App() {
         isPageTransitioning={isPageTransitioning}
       />
 
-      {/* Seamless Page Transition: Opacity-only crossfade (no scale distortion) */}
-      <AnimatePresence 
-        mode="wait"
-        onExitComplete={() => {
-          window.scrollTo(0, 0);
-          if (lenisRef.current) {
-            lenisRef.current.scrollTo(0, { immediate: true });
-          }
-          setIsPageTransitioning(false);
-        }}
+      {/* ─── Directional Vertical Motion Blur Filter Definition ─── */}
+      <svg
+        aria-hidden="true"
+        style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden', pointerEvents: 'none' }}
       >
-        <motion.div
-          key={currentPage}
-          initial={{ opacity: 0 }}
-          animate={{ 
-            opacity: 1, 
-            transition: {
-              duration: 0.35,
-              ease: [0.4, 0, 0.2, 1]
+        <defs>
+          <filter id="scroll-motion-blur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur id="scroll-motion-blur-fe" in="SourceGraphic" stdDeviation="0 0" />
+          </filter>
+        </defs>
+      </svg>
+
+      {/* ─── Page Content (Excludes Pinned Navbar, Pinned GIF & Mute Button) ─── */}
+      <main className="w-full">
+        {/* Seamless Page Transition: Opacity-only crossfade (no scale distortion) */}
+        <AnimatePresence 
+          mode="wait"
+          onExitComplete={() => {
+            window.scrollTo(0, 0);
+            if (lenisRef.current) {
+              lenisRef.current.scrollTo(0, { immediate: true });
             }
+            setIsPageTransitioning(false);
           }}
-          exit={{ 
-            opacity: 0, 
-            transition: {
-              duration: 0.35,
-              ease: [0.4, 0, 0.2, 1]
-            }
-          }}
-          className="w-full"
         >
-          {currentPage === 'home' ? (
-            <HomePage 
-              onNavigate={handleNavigate} 
-              hasIntroPlayed={hasIntroPlayed}
-              onIntroComplete={handleIntroComplete}
-              onBoxRevealComplete={setIsBoxRevealComplete}
-            />
-          ) : (
-            <AboutPage onNavigate={handleNavigate} />
-          )}
-        </motion.div>
-      </AnimatePresence>
+          <motion.div
+            key={currentPage}
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: 1, 
+              transition: {
+                duration: 0.35,
+                ease: [0.4, 0, 0.2, 1]
+              }
+            }}
+            exit={{ 
+              opacity: 0, 
+              transition: {
+                duration: 0.35,
+                ease: [0.4, 0, 0.2, 1]
+              }
+            }}
+            className="w-full"
+          >
+            {currentPage === 'home' ? (
+              <HomePage 
+                onNavigate={handleNavigate} 
+                hasIntroPlayed={hasIntroPlayed}
+                onIntroComplete={handleIntroComplete}
+                onBoxRevealComplete={setIsBoxRevealComplete}
+              />
+            ) : (
+              <AboutPage onNavigate={handleNavigate} />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </main>
 
       {/* Floating persistent Mute Button with Liquid Glass optical behavior */}
       <MuteButton isMuted={isMuted} onToggle={toggleMute} />

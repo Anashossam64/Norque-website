@@ -16,7 +16,7 @@ const COUNTRIES = [
 
 export default function AboutHero() {
   return (
-    <section className="w-full pt-[1vw] pb-[6.25vw] px-[0.8333vw]">
+    <section className="w-full pt-[1vw] pb-[6.25vw] px-[0.8333vw] motion-blur-target">
       <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-y-12 lg:gap-x-[0.8333vw]">
         {/* ─── Column 1 & 2: Manifesto & Aesthetics Media ─── */}
         <div className="lg:col-span-2 flex flex-col justify-between">

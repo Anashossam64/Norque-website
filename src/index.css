@@ -135,3 +135,10 @@ html.lenis, html.lenis body {
   animation-play-state: paused;
 }
 
+/* 5. Directional Scroll Motion Blur (Excludes GIF, Nav & Mute Button) */
+body.is-scrolling .motion-blur-target {
+  filter: url(#scroll-motion-blur);
+  will-change: filter;
+}
+
+

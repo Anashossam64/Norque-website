@@ -41,7 +41,7 @@ const projects = [
 
 export default function SelectedWorks() {
   return (
-    <section id="works" className="w-full bg-black py-[2.7778vw]">
+    <section id="works" className="w-full bg-black py-[2.7778vw] motion-blur-target">
       {/* Universal Container Margin: 12px (0.8333vw) */}
       <div className="w-full px-[0.8333vw]">
         {/* Section Heading */}

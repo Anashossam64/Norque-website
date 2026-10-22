@@ -37,7 +37,7 @@ const newsItems = [
 
 export default function NewsSection() {
   return (
-    <section className="w-full bg-black pt-[2.7778vw] pb-[8.3333vw]">
+    <section className="w-full bg-black pt-[2.7778vw] pb-[8.3333vw] motion-blur-target">
       {/* Universal Container Margin: 12px (0.8333vw) */}
       <div className="w-full px-[0.8333vw]">
         {/* Section Header */}

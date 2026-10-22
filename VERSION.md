@@ -1,5 +1,32 @@
 # NORQUE STUDIOS™ — Version Log
 
+## Version 0.3.0 (Day 4 Complete)
+**Date:** October 22, 2026 (End of Day 4 Sprint)  
+**Status:** Home & About Pages 100% Finalized, Sequential Line-by-Line Stagger, Scroll Motion Blur Isolated
+
+### Overview
+Version `0.3.0` concludes Day 4 with Home and About pages 100% completed, verified, and locked in. It transitions typography stagger from word-level to dynamic sequential line-by-line masked reveals, synchronizes global stagger timing (`delay = 0.2s`, `stagger = 0.05s`), updates all navbar action links and timezone labels to uppercase, and introduces velocity-responsive vertical scroll motion blur with explicit exclusion of the pinned GIF.
+
+### Key Deliverables in 0.3.0
+- **Line-by-Line Typography Stagger (`MaskedWordStagger.jsx`)**:
+  - Transformed reveal from word-split to visual line-by-line grouping based on client reference clip `References/Stragger in pages.mp4`.
+  - Automatic line detection with offscreen measurement DOM responding to container resize and font loading (`document.fonts.ready`).
+  - Unified multi-paragraph blocks in `Showcase.jsx` and `Philosophy.jsx` so lines reveal in continuous order across paragraphs rather than triggering concurrently.
+  - Preserved multi-paragraph vertical spacing (`space-y-[1.5278vw]`).
+- **Global Stagger Timing Synchronization**:
+  - Global stagger configuration updated to `delay = 0.2s` and `stagger = 0.05s`.
+- **Navbar Uppercase Polish**:
+  - All navigation links updated to uppercase (`ABOUT`, `WORKS`, `SERVICES`).
+  - Cairo GMT clock country label updated to uppercase (`EGYPT, HH:MM:SS AM/PM GMT`).
+- **Velocity-Driven Scroll Motion Blur Engine**:
+  - Integrated SVG `<feGaussianBlur>` tied to Lenis scroll velocity with organic RAF lerp decay (`0.28`).
+  - Decoupled filter from `<main>` and scoped strictly via `.motion-blur-target`.
+  - Pinned GIF in `Showcase.jsx`, pinned Navbar, and floating Mute Button remain 100% sharp with zero motion blur.
+- **Sprint Milestone**:
+  - Home and About pages 100% completed and ready for remaining page designs.
+
+---
+
 ## Version 0.2.2 (Day 3 Complete)
 **Date:** October 21, 2026 (End of Day 3 Sprint)  
 **Status:** Design Aligned, Universal Typography Stagger, Production Verified

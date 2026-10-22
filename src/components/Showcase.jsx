@@ -116,36 +116,38 @@ export default function Showcase({ onRevealCompleteChange }) {
       </div>
 
       {/* Brand Statement / Manifesto follows after unpinning */}
-      <div className="w-full px-[0.8333vw]">
+      <div className="w-full px-[0.8333vw] motion-blur-target">
         <div className="pt-[4.1667vw] pb-[9.0278vw]">
-          <div className="max-w-[73.3333vw] space-y-[1.5278vw]">
-            <MaskedWordStagger className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
-              NORQUE STUDIOS™ — A creative studio for brands that want to build something real. Based between ideas, design and digital, we work across branding, creative direction, UI/UX and web development.
-            </MaskedWordStagger>
-            <MaskedWordStagger className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
-              We collaborate with ambitious brands, businesses and creative partners to shape identities, digital experiences and visual systems that feel considered, distinctive and built to last. From the first idea to the final detail, we bring strategy, design and development together under one roof.
-            </MaskedWordStagger>
-            <MaskedWordStagger className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white">
-              Feel free to explore our{" "}
-              <a href="#works" className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer">
-                Works
-              </a>
-              , check our{" "}
-              <a 
-                href="https://www.behance.net" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer"
-              >
-                Behance
-              </a>{" "}
-              or say hello at{" "}
-              <a 
-                href="mailto:hello@norquestudios.com" 
-                className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer"
-              >
-                hello@norquestudios.com
-              </a>
+          <div className="max-w-[73.3333vw]">
+            <MaskedWordStagger className="text-[1.5278vw] font-bold tracking-[-0.03em] leading-[1.18] text-white space-y-[1.5278vw]">
+              <p>
+                NORQUE STUDIOS™ — A creative studio for brands that want to build something real. Based between ideas, design and digital, we work across branding, creative direction, UI/UX and web development.
+              </p>
+              <p>
+                We collaborate with ambitious brands, businesses and creative partners to shape identities, digital experiences and visual systems that feel considered, distinctive and built to last. From the first idea to the final detail, we bring strategy, design and development together under one roof.
+              </p>
+              <p>
+                Feel free to explore our{" "}
+                <a href="#works" className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer">
+                  Works
+                </a>
+                , check our{" "}
+                <a 
+                  href="https://www.behance.net" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer"
+                >
+                  Behance
+                </a>{" "}
+                or say hello at{" "}
+                <a 
+                  href="mailto:hello@norquestudios.com" 
+                  className="text-[#747474] hover:text-white transition-colors duration-300 cursor-pointer"
+                >
+                  hello@norquestudios.com
+                </a>
+              </p>
             </MaskedWordStagger>
           </div>
         </div>

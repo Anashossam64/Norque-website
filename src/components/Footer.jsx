@@ -8,7 +8,7 @@ import MaskedWordStagger from './MaskedWordStagger';
 /* ========================================================================= */
 export default function Footer() {
   return (
-    <footer id="contact" className="w-full bg-black">
+    <footer id="contact" className="w-full bg-black motion-blur-target">
       {/* Universal Container Margin: 12px (0.8333vw) */}
       <div className="w-full px-[0.8333vw]">
         {/* ─── 1. Top Callout Section ─── */}

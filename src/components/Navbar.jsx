@@ -17,7 +17,7 @@ function StaggeredNavButton({ label, onClick }) {
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative inline-flex items-center text-[0.5556vw] font-semibold tracking-normal text-white cursor-pointer select-none py-[0.1vw]"
+      className="relative inline-flex items-center text-[0.5556vw] font-semibold tracking-normal text-white uppercase cursor-pointer select-none py-[0.1vw]"
     >
       <span className="inline-flex overflow-hidden leading-tight">
         {words.map((word, index) => (
@@ -33,7 +33,7 @@ function StaggeredNavButton({ label, onClick }) {
               transition={{
                 duration: 0.38,
                 ease: [0, 0.8, 0.2, 1],
-                delay: isHovered ? index * 0.04 : (words.length - 1 - index) * 0.04,
+                delay: isHovered ? 0.1 + index * 0.1 : (words.length - 1 - index) * 0.05,
               }}
             >
               {word}
@@ -46,8 +46,8 @@ function StaggeredNavButton({ label, onClick }) {
               animate={{ y: isHovered ? '0%' : '100%' }}
               transition={{
                 duration: 0.38,
-                ease: [0, 0.8, 0.2, 1],
-                delay: isHovered ? index * 0.04 : (words.length - 1 - index) * 0.04,
+                ease: [0, 0.01, 0.01, 1],
+                delay: isHovered ? 0.1 + index * 0.1 : (words.length - 1 - index) * 0.05,
               }}
               aria-hidden="true"
             >
@@ -100,9 +100,9 @@ export default function Navbar({
         const second = parts.find(p => p.type === 'second')?.value || '00';
         const dayPeriod = parts.find(p => p.type === 'dayPeriod')?.value?.toUpperCase() || 'PM';
         
-        setEgyptTime(`Egypt, ${hour}:${minute}:${second} ${dayPeriod} GMT`);
+        setEgyptTime(`EGYPT, ${hour}:${minute}:${second} ${dayPeriod} GMT`);
       } catch (e) {
-        setEgyptTime('Egypt, 03:48:10 PM GMT');
+        setEgyptTime('EGYPT, 03:48:10 PM GMT');
       }
     }
     updateClock();
@@ -164,15 +164,15 @@ export default function Navbar({
         {/* Column 2: Navigation Links with Staggered Masked Text Animation */}
         <nav className="flex items-center space-x-[0.6944vw]" aria-label="Main Navigation">
           <StaggeredNavButton 
-            label="About" 
+            label="ABOUT" 
             onClick={handleLinkClick('about')} 
           />
           <StaggeredNavButton 
-            label="Works" 
+            label="WORKS" 
             onClick={handleLinkClick('home', 'works')} 
           />
           <StaggeredNavButton 
-            label="services" 
+            label="SERVICES" 
             onClick={handleLinkClick('home', 'services')} 
           />
         </nav>
@@ -182,8 +182,8 @@ export default function Navbar({
 
         {/* Column 4: Egypt Live GMT Time */}
         <div className="text-right">
-          <span className="text-[0.5556vw] font-semibold tracking-[-0.03em] text-white tabular-nums select-none">
-            {egyptTime || 'Egypt, 03:48:10 PM GMT'}
+          <span className="text-[0.5556vw] font-semibold tracking-[-0.03em] text-white tabular-nums select-none uppercase">
+            {egyptTime || 'EGYPT, 03:48:10 PM GMT'}
           </span>
         </div>
       </div>

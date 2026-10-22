@@ -50,7 +50,7 @@ export default function Hero({ onNavigate, hasIntroPlayed = false, onIntroComple
 
   /* ─── Render ─── */
   return (
-    <section className="relative w-full h-screen min-h-screen flex flex-col justify-between overflow-hidden bg-black select-none">
+    <section className="relative w-full h-screen min-h-screen flex flex-col justify-between overflow-hidden bg-black select-none motion-blur-target">
       {/* ─── 1. Background Video Layer ─── */}
       <div 
         className={`absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-[1200ms] z-0 ${
