@@ -67,14 +67,14 @@ export default function SelectedWorks() {
               {/* Project Meta Details */}
               <div className="pt-[0.6944vw]">
                 <div className="flex justify-between items-baseline">
-                  <h3 className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-white">
+                  <h3 className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-white leading-none vertical-trim">
                     {project.title}
                   </h3>
-                  <span className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-white">
+                  <span className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-white leading-none vertical-trim">
                     {project.location}
                   </span>
                 </div>
-                <p className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-[#747474] pt-[0.5556vw]">
+                <p className="text-[0.6944vw] font-semibold tracking-[-0.03em] text-[#747474] pt-[0.5vw] leading-none vertical-trim">
                   {project.category}
                 </p>
               </div>

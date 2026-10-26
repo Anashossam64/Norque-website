@@ -1,10 +1,52 @@
 import React from 'react';
 import MainLogo from './MainLogo';
 import MaskedWordStagger from './MaskedWordStagger';
+import MagnetLines from './MagnetLines';
+
+/* ========================================================================= */
+/* MAGNET LINES CONFIGURATION VARIABLES                                      */
+/* Custom controls for https://reactbits.dev/backgrounds/magnet-lines        */
+/* Adjust these parameters below to change how the interactive field behaves */
+/* ========================================================================= */
+const MAGNET_LINES_CONFIG = {
+  // Visuals & Layout
+  lineColor: '#ffffff',       // Line color (hex, rgb, or css color)
+  accentColor: undefined,     // Highlight accent color on cursor interaction (e.g. '#ffffff' or '#f43f5e')
+  lineWidth: 2,               // Thickness of each line in pixels
+  lineHeight: 18,             // Length of each line in pixels
+  spacing: 30,                // Spacing distance between lines in pixels
+  rows: undefined,            // Number of rows (leave undefined for auto-fill)
+  columns: undefined,         // Number of columns (leave undefined for auto-fill)
+  shape: 'line',              // Shape of elements: 'line' | 'arrow' | 'needle'
+  baseAngle: -10,             // Resting angle of lines in degrees (e.g. -10, 0, 45)
+  fade: 0.65,                 // Distance-based opacity fade (0 to 1)
+  edgeFade: 0,                // Edge vignette / fade at container boundaries (0 to 1)
+  rainbow: false,             // Rainbow spectral color mode (true | false)
+
+  // Motion & Physics
+  mode: 'orbit',              // Magnetic pattern: 'orbit' | 'attract' | 'spiral' | 'dipole'
+  radius: 200,                // Radius of cursor interaction zone in pixels
+  reach: 0,                   // Effective distance lines follow cursor (0 = entire field)
+  scatter: 0,                 // Random angle scatter at rest (0 to 1)
+  stretch: 0.4,               // Line elongation when moving (0 to 2)
+  inertia: 0.35,              // Smoothness / swing delay (0 = instant, 1 = heavy lag)
+  bounce: 0.3,                // Overshoot wobble when settling (0 = none, 1 = high bounce)
+  ripple: 0.3,                // Radial outward delay from cursor (0 to 1)
+
+  // Behaviors & Animation
+  clickPulse: true,           // Send outward spin shockwave on mouse click
+  intro: true,                // Staggered reveal animation when element first loads
+  idle: false,                // Ambient floating motion when cursor leaves the area
+
+  // 3D Perspective Tilt
+  tiltX: 0,                   // 3D tilt around X-axis in degrees (-70 to 70)
+  tiltY: 0,                   // 3D tilt around Y-axis in degrees (-70 to 70)
+  maxDevicePixelRatio: 2,     // Maximum device pixel ratio for performance
+};
 
 /* ========================================================================= */
 /* UNIVERSAL FOOTER COMPONENT                                                */
-/* Project inquiry callout, giant vector brand mark, and studio links        */
+/* Project inquiry callout, interactive magnet lines, vector logo & links    */
 /* ========================================================================= */
 export default function Footer() {
   return (
@@ -27,8 +69,16 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ─── 2. Bottom Giant Brand Mark & Legal Directory ─── */}
-        <div className="pt-[31.9444vw]">
+        {/* ─── 2. Interactive Magnet Lines Element (Fits Red Box) ─── */}
+        <div className="w-full mt-[1.49vw] mb-[2.4vw] h-[28.05vw] overflow-hidden">
+          <MagnetLines
+            {...MAGNET_LINES_CONFIG}
+            className="w-full h-full"
+          />
+        </div>
+
+        {/* ─── 3. Bottom Giant Brand Mark & Legal Directory ─── */}
+        <div>
           {/* Full-Width Brand Vector */}
           <div className="w-full mb-[0.6944vw]">
             <MainLogo className="w-full h-auto text-white" />

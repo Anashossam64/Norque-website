@@ -40,8 +40,8 @@ export default function AboutNews() {
       <div className="w-full">
         {/* ─── 1. Header with Title & Subtitle ─── */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-[3.4722vw] gap-4">
-          <h2 className="text-[32px] sm:text-[3.1944vw] font-semibold text-white tracking-[-0.03em] leading-none select-none">
-            What happened lately
+          <h2 className="text-[32px] sm:text-[3.1944vw] font-semibold text-white tracking-[-0.03em] leading-none select-none uppercase">
+            WHAT HAPPENED LATELY
           </h2>
           <span className="text-[11px] sm:text-[0.6944vw] font-semibold text-white/70 tracking-[-0.03em] select-none">
             Below you will find latest news
@@ -54,31 +54,25 @@ export default function AboutNews() {
           gapClass="gap-[0.8333vw]"
           paddingRightClass="pr-[0.8333vw]"
           speed={-0.75}
-          renderItem={(item, idx, hasDraggedRef) => (
+          interactive={false}
+          renderItem={(item) => (
             <article 
-              className="w-[280px] sm:w-[23.9583vw] shrink-0 flex flex-col group cursor-pointer"
-              onClick={(e) => {
-                if (hasDraggedRef?.current || window.__norqueCarouselDragged) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  return;
-                }
-              }}
+              className="w-[280px] sm:w-[23.9583vw] shrink-0 flex flex-col pointer-events-none select-none"
             >
               {/* Media Card */}
-              <div className={`w-full ${item.aspect} rounded-[4px] overflow-hidden mb-[0.6944vw] bg-[#121214] pointer-events-none`}>
+              <div className={`w-full ${item.aspect} rounded-[4px] overflow-hidden mb-[0.6944vw] bg-[#121214]`}>
                 <img 
                   src={item.image} 
                   alt={item.title} 
                   draggable={false}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03] select-none"
+                  className="w-full h-full object-cover select-none pointer-events-none"
                   loading="lazy"
                 />
               </div>
 
               {/* Text Info */}
-              <div className="flex flex-col space-y-[0.3472vw] pointer-events-none select-none">
-                <h3 className="text-[12px] sm:text-[0.6944vw] font-semibold text-white tracking-[-0.03em] leading-snug group-hover:opacity-80 transition-opacity">
+              <div className="flex flex-col space-y-[0.3472vw] select-none pointer-events-none">
+                <h3 className="text-[12px] sm:text-[0.6944vw] font-semibold text-white tracking-[-0.03em] leading-snug">
                   {item.title}
                 </h3>
                 <p className="text-[11px] sm:text-[0.6944vw] font-semibold text-[#747474] tracking-[-0.03em] leading-normal line-clamp-3">

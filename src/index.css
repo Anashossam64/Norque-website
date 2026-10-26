@@ -141,4 +141,22 @@ body.is-scrolling .motion-blur-target {
   will-change: filter;
 }
 
+/* 6. Typography Vertical Trim (Cap Height to Baseline) */
+.vertical-trim {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+  text-box: trim-both cap alphabetic;
+  leading-trim: both;
+  text-edge: cap alphabetic;
+}
+
+@supports not (text-box: trim-both cap alphabetic) {
+  .vertical-trim {
+    /* Fallback for browsers without native text-box-trim: trim 0.25em font ascent and descent */
+    margin-top: -0.25em;
+    margin-bottom: -0.25em;
+  }
+}
+
+
 

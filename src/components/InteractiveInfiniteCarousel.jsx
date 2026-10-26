@@ -15,6 +15,7 @@ export default function InteractiveInfiniteCarousel({
   paddingRightClass = "pr-[0.8333vw]",
   className = "",
   speed = -0.75, // pixels per frame at 60fps
+  interactive = true,
 }) {
   /* ─── DOM & Animation Refs ─── */
   const outerRef = useRef(null);
@@ -33,6 +34,10 @@ export default function InteractiveInfiniteCarousel({
   const hasDraggedRef = useRef(false);
   const rafIdRef = useRef(null);
   const isInitializedRef = useRef(false);
+  const interactiveRef = useRef(interactive);
+  useEffect(() => {
+    interactiveRef.current = interactive;
+  }, [interactive]);
 
   const [isCursorGrabbing, setIsCursorGrabbing] = useState(false);
 
@@ -86,10 +91,10 @@ export default function InteractiveInfiniteCarousel({
 
       if (!isDraggingRef.current) {
         // Inertia decay if velocity exists from drag release
-        if (Math.abs(velocityRef.current) > 0.05) {
+        if (interactiveRef.current && Math.abs(velocityRef.current) > 0.05) {
           offsetRef.current += velocityRef.current * dt;
           velocityRef.current *= Math.pow(0.95, dt); // Friction decay
-        } else if (!isHoveredRef.current) {
+        } else if (!interactiveRef.current || !isHoveredRef.current) {
           // Normal continuous auto-scroll speed
           offsetRef.current += speed * dt;
         }
@@ -237,19 +242,21 @@ export default function InteractiveInfiniteCarousel({
   return (
     <div
       ref={outerRef}
-      onPointerDown={handlePointerDown}
-      onClickCapture={(e) => {
+      onPointerDown={interactive ? handlePointerDown : undefined}
+      onClickCapture={interactive ? (e) => {
         if (hasDraggedRef.current || window.__norqueCarouselDragged) {
           e.preventDefault();
           e.stopPropagation();
           e.stopImmediatePropagation?.();
         }
-      }}
-      onWheel={handleWheel}
-      onMouseEnter={() => { isHoveredRef.current = true; }}
-      onMouseLeave={() => { isHoveredRef.current = false; }}
-      className={`w-full overflow-hidden select-none touch-pan-y ${
-        isCursorGrabbing ? 'cursor-grabbing [&_*]:!cursor-grabbing' : 'cursor-grab'
+      } : undefined}
+      onWheel={interactive ? handleWheel : undefined}
+      onMouseEnter={interactive ? () => { isHoveredRef.current = true; } : undefined}
+      onMouseLeave={interactive ? () => { isHoveredRef.current = false; } : undefined}
+      className={`w-full overflow-hidden select-none ${
+        interactive
+          ? `touch-pan-y ${isCursorGrabbing ? 'cursor-grabbing [&_*]:!cursor-grabbing' : 'cursor-grab'}`
+          : 'pointer-events-none'
       } ${className}`}
     >
       <div
